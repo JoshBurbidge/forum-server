@@ -6,6 +6,7 @@ const { Error, FieldError } = require('../model/errors/Error');
 const { User } = require('../model/User');
 
 
+// need to login after register - get cookie
 router.post('/register', async (req, res) => {
     // console.log(req.body);
 
