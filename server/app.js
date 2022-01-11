@@ -21,9 +21,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(process.env.cookiesecret));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use((req, res, next) => {
+    // added these headers due to errors making requests from client
     res.header('Access-Control-Allow-Origin', 'http://localhost:3001');
-    res.header('Access-control-allow-headers', '*');
-    if (req.cookies) console.log('cookies: ', req.cookies);
+    res.header('Access-Control-Allow-Headers', 'content-type, *');
+    res.header('Access-Control-Allow-Credentials', true); // cookie doesn't work without this
+    // if (req.cookies) console.log('cookies: ', req.cookies);
     if (req.signedCookies) console.log('signedCookies: ', req.signedCookies);
     next();
 });

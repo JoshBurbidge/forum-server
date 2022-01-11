@@ -10,16 +10,18 @@ const { User } = require('../model/User');
 router.post('/register', async (req, res) => {
     // console.log(req.body);
 
-    if (req.body.password.length < 8) {
+    if (req.body.username.length < 3) {
+        res.status(400);
         res.send({
-            errors: new FieldError('password', 'password must be at least 8 characters')
+            errors: new FieldError('username', 'username must be at least 3 characters')
         });
         return;
     }
 
-    if (req.body.username.length < 3) {
+    if (req.body.password.length < 8) {
+        res.status(400);
         res.send({
-            errors: new FieldError('username', 'usernam must be at least 3 characters')
+            errors: new FieldError('password', 'password must be at least 8 characters')
         });
         return;
     }
@@ -35,6 +37,7 @@ router.post('/register', async (req, res) => {
         res.send(newuser);
     } catch (error) {
         if (error.parent.code === 'ER_DUP_ENTRY') {
+            res.status(400);
             res.send({ errors: new FieldError('username', 'username already taken') });
         }
         else {
@@ -49,7 +52,6 @@ router.post('/login', async (req, res) => {
     // console.log(req.body);
 
     const signedCookies = req.signedCookies;
-    console.log(signedCookies.userId);
     if (signedCookies.userId !== undefined) {
         res.send({
             login: false,
@@ -75,19 +77,23 @@ router.post('/login', async (req, res) => {
         }
     });
 
+    // if user was not found -> invalid login
     if (!user) {
         res.send({
             login: false,
             error: new Error('invalid login')
         });
     } else {
-        res.cookie('userId', user.getDataValue('id'), { signed: true });
+        // user was found -> valid login
+        res.cookie('userId', user.getDataValue('id'), {
+            signed: true,
+        });
+        console.log('added cookie');
         res.send({
             login: true,
             user
         });
     }
-
 });
 
 router.post('/logout', (req, res) => {
