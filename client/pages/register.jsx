@@ -2,13 +2,13 @@ import { TextField, Stack, Grid, Box, Button, CssBaseline, Container, Typography
 import axios from 'axios';
 import { useState } from "react";
 import { useRouter } from 'next/router'
-import { loadGetInitialProps } from "next/dist/shared/lib/utils";
 
-export async function getStaticProps() {
-  return {
-    props: { server: process.env.serverDomain }
-  }
-}
+
+// export async function getStaticProps() {
+//   return {
+//  props: { server: process.env.serverDomain }
+//   }
+// }
 
 export default function Register(props) {
   const [user, setUser] = useState("");
@@ -17,13 +17,14 @@ export default function Register(props) {
   const [passError, setPassError] = useState();
   const router = useRouter();
 
-  const register = async () => {
+
+  const registerUser = async () => {
     console.log({ username: user, password: pass })
     // try {
-    return await axios.post(props.server + '/users/register', {
+    return await axios.post(process.env.NEXT_PUBLIC_serverDomain + '/users/register', {
       username: user,
       password: pass
-    });
+    }, { withCredentials: true });
     //   return response;
     // } catch (e) {
     //   return e;
@@ -57,20 +58,21 @@ export default function Register(props) {
         <Box component="form" width='100%' sx={{ mt: 2, display: 'flex', flexDirection: 'column' }}
           onSubmit={(e) => {
             e.preventDefault();
-            register()
+            registerUser()
               .then(res => {
                 console.log(res);
-                axios.post(props.server + '/users/login', { //not getting cookie
-                  username: user,
-                  password: pass
-                }, { withCredentials: true }) // had to add credentials due to cookie
-                  .then(res => {
-                    console.log(res)
-                    router.push('/');
-                  })
-                  .catch(err => {
-                    console.log(err);
-                  });
+                // axios.post(process.env.NEXT_PUBLIC_serverDomain + '/users/login', { //not getting cookie
+                //   username: user,
+                //   password: pass
+                // }, { withCredentials: true }) // had to add credentials due to cookie
+                //   .then(res => {
+                //     console.log(res)
+                //     router.push('/');
+                //   })
+                //   .catch(err => {
+                //     console.log(err);
+                //   });
+                router.push('/');
               })
               .catch(err => {
                 console.log(err);

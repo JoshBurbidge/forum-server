@@ -26,6 +26,14 @@ router.post('/register', async (req, res) => {
         return;
     }
 
+    if (req.signedCookies.userId !== undefined) {
+        res.status(400);
+        res.send({
+            errors: new Error('you are already logged in')
+        });
+        return;
+    }
+
     const hashed = shajs('sha256').update(req.body.password).digest('base64');
     // add salting
 
@@ -33,6 +41,9 @@ router.post('/register', async (req, res) => {
         const newuser = await User.create({
             username: req.body.username,
             password: hashed
+        });
+        res.cookie('userId', newuser.getDataValue('id'), {
+            signed: true,
         });
         res.send(newuser);
     } catch (error) {
@@ -49,21 +60,23 @@ router.post('/register', async (req, res) => {
 
 
 router.post('/login', async (req, res) => {
-    // console.log(req.body);
+    //console.log(req);
 
     const signedCookies = req.signedCookies;
     if (signedCookies.userId !== undefined) {
+        res.status(400);
         res.send({
             login: false,
-            error: new Error('user already logged in')
+            errors: new Error('user already logged in')
         });
         return;
     }
 
     if (req.body.password.length < 8) {
+        res.status(400);
         res.send({
             login: false,
-            error: new Error('invalid login')
+            errors: new Error('invalid login')
         });
         return;
     }
@@ -79,16 +92,18 @@ router.post('/login', async (req, res) => {
 
     // if user was not found -> invalid login
     if (!user) {
+        res.status(400);
         res.send({
             login: false,
-            error: new Error('invalid login')
+            errors: new Error('invalid login')
         });
     } else {
         // user was found -> valid login
-        res.cookie('userId', user.getDataValue('id'), {
+        const userId = user.getDataValue('id');
+        res.cookie('userId', userId, {
             signed: true,
         });
-        console.log('added cookie');
+        console.log(`added cookie: userId = ${userId}`);
         res.send({
             login: true,
             user
@@ -97,17 +112,39 @@ router.post('/login', async (req, res) => {
 });
 
 router.post('/logout', (req, res) => {
-    if (req.signedCookies.userId !== undefined) {
+    const userId = req.signedCookies.userId;
+    if (userId !== undefined) {
         res.clearCookie('userId');
+        console.log(`removed cookie: userId = ${userId}`)
         res.send({
             logout: true
         });
     } else {
         res.send({
             logout: false,
-            error: new Error('no user is logged in')
+            errors: new Error('no user is logged in')
         });
     }
+});
+
+router.get('/me', async (req, res) => {
+    //console.log('headers: ', req.rawHeaders);
+    const userId = req.signedCookies.userId;
+    if (userId === undefined) {
+        res.send({ loggedIn: false });
+        return;
+    }
+
+    const user = await User.findOne({
+        where: {
+            id: userId
+        }
+    });
+    res.send({
+        loggedIn: true,
+        id: userId,
+        username: user.getDataValue('username')
+    });
 });
 
 
