@@ -47,7 +47,7 @@ postInit(seq);
 userInit(seq);
 
 const synctable = () => {
-    User.sync({ alter: true })
+    Post.sync({ alter: true })
         .then(() => {
             console.log('User table synced');
         });

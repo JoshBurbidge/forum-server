@@ -4,9 +4,13 @@ class Post extends Model { }
 
 const postInit = (seq) => {
     Post.init({
-        author: {
+        userId: {
             type: DataTypes.INTEGER,
             allowNull: false,
+        },
+        username: {
+            type: DataTypes.STRING,
+            allowNull: false
         },
         title: {
             type: DataTypes.STRING(45),

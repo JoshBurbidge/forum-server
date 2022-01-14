@@ -7,19 +7,26 @@ export default function Header(props) {
   if (!props.loggedIn) {
     links = (
       <>
-        <Link href='/register' >
-          <a><Typography marginX={2}>register</Typography></a>
-        </Link >
-        <Link href='/login' >
-          <a><Typography marginX={2}>log in</Typography></a>
-        </Link >
+        <Typography marginX={2}>
+          <Link href='/register' >
+            register
+          </Link >
+        </Typography>
+
+        <Typography marginX={2}>
+          <Link href='/login' >
+            log in
+          </Link >
+        </Typography>
       </>
     );
   } else {
     links = (
-      <Link href='/dashboard' >
-        <a><Typography marginX={2}>{props.username}</Typography></a>
-      </Link >
+      <Typography marginX={2}>
+        <Link href='/dashboard' >
+          {props.username}
+        </Link >
+      </Typography>
     );
   }
 

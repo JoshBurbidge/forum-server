@@ -14,19 +14,21 @@ router.get('/all', async (req, res) => {
 router.get('/byUser/:id', async (req, res) => {
     let posts = await Post.findAll({
         where: {
-            author: req.params.id
+            userId: req.params.id
         }
     });
     console.log(posts);
     res.send(posts.map(p => p.toJSON()));
 });
 
+
 router.post('/new', async (req, res) => {
     console.log(req.body);
 
     const newpost = await Post.create({
         title: req.body.title,
-        author: req.body.author,
+        userId: req.body.userId,
+        username: req.body.username,
         content: req.body.content
     });
 
@@ -47,7 +49,8 @@ router.post('/:id/update', async (req, res) => {
 
     await post.update({
         title: req.body.title,
-        author: req.body.author,
+        userId: req.body.userId,
+        username: req.body.username,
         content: req.body.content
     });
     res.send({

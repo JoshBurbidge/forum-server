@@ -1,5 +1,5 @@
 import { Container, Stack, Typography } from '@mui/material'
-import Post from '../components/Post';
+import PostCard from '../components/PostCard';
 import Header from '../components/Header';
 import axios from 'axios'
 import { getUserIdCookie } from '../util/cookie';
@@ -35,7 +35,7 @@ export default function Home(props) {
   //console.log(props);
 
   const postsList = props.posts.map(post => {
-    return <Post title={post.title} key={post.id} />
+    return <PostCard post={post} key={post.id} />
   });
 
   return (
