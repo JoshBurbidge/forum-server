@@ -1,6 +1,13 @@
 const { DataTypes, Model } = require('sequelize');
+const { User } = require('./User');
 
-class Post extends Model { }
+class Post extends Model {
+
+}
+
+Post.associate = function () {
+    Post.belongsTo(User);
+}
 
 const postInit = (seq) => {
     Post.init({
@@ -22,9 +29,11 @@ const postInit = (seq) => {
         }
     }, {
         sequelize: seq,
-        modelName: 'Post'
+        modelName: 'Post',
+
     });
 }
+
 module.exports = { Post, postInit };
 
 

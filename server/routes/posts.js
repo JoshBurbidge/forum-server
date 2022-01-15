@@ -3,10 +3,15 @@ var router = express.Router();
 
 const { Post } = require('../model/Post');
 const { Error, FieldError } = require('../model/errors/Error');
+const { User } = require('../model/User');
 
 
 router.get('/all', async (req, res) => {
-    let posts = await Post.findAll({});
+    // console.log("offset: ", req.query.offset);
+    let dbquery = { limit: 10 };
+    if (req.query.offset) dbquery.offset = parseInt(req.query.offset);
+
+    let posts = await Post.findAll(dbquery);
 
     res.send(posts.map(p => p.toJSON()));
 });
@@ -15,9 +20,14 @@ router.get('/byUser/:id', async (req, res) => {
     let posts = await Post.findAll({
         where: {
             userId: req.params.id
-        }
+        },
+        include: User
     });
-    console.log(posts);
+
+    // for (p in posts) {
+    //     console.log(p.getUser());
+    // }
+
     res.send(posts.map(p => p.toJSON()));
 });
 
@@ -33,7 +43,7 @@ router.post('/new', async (req, res) => {
     });
 
     console.log(newpost);
-    res.send('saved')
+    res.send({ saved: true });
 })
 
 router.post('/:id/update', async (req, res) => {

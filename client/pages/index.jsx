@@ -1,8 +1,11 @@
-import { Container, Stack, Typography } from '@mui/material'
+import { Box, Container, Stack, Typography } from '@mui/material'
 import PostCard from '../components/PostCard';
 import Header from '../components/Header';
 import axios from 'axios'
 import { getUserIdCookie } from '../util/cookie';
+import ArrowButton from '../components/ArrowButton';
+import { useState } from 'react';
+
 
 
 export async function getServerSideProps(ctx) {
@@ -10,7 +13,7 @@ export async function getServerSideProps(ctx) {
   const postsRes = await fetch(url);
   const allPosts = await postsRes.json();
 
-  const { req, res } = ctx;
+  // const { req, res } = ctx;
 
   const meResponse = await axios.get(process.env.NEXT_PUBLIC_serverDomain + '/users/me', {
     withCredentials: true,
@@ -19,7 +22,7 @@ export async function getServerSideProps(ctx) {
     }
   });
   const { loggedIn, username } = meResponse.data;
-  console.log(meResponse.data);
+  // console.log(meResponse.data);
 
   return {
     props: {
@@ -33,18 +36,29 @@ export async function getServerSideProps(ctx) {
 
 export default function Home(props) {
   //console.log(props);
+  const [currentPosts, setCurrentPosts] = useState(props.posts);
 
-  const postsList = props.posts.map(post => {
+  let postsList = currentPosts.map(post => {
     return <PostCard post={post} key={post.id} />
   });
+
+  async function getNextPage() {
+    const res = await fetch(process.env.NEXT_PUBLIC_serverDomain + '/posts/all?offset=' + postsList.length);
+    const newPosts = await res.json();
+    return newPosts;
+  }
 
   return (
     <>
       <Header loggedIn={props.loggedIn} username={props.username} />
 
       <Container >
-        <Stack paddingTop={2} spacing={3}>
+        <Stack paddingY={4} spacing={3}>
           {postsList}
+          <ArrowButton onClick={async () => {
+            const newposts = await getNextPage();
+            setCurrentPosts(currentPosts.concat(newposts));
+          }} />
         </Stack>
       </Container>
     </>

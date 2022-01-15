@@ -4,11 +4,6 @@ import { useState } from "react";
 import { useRouter } from 'next/router'
 
 
-// export async function getStaticProps() {
-//   return {
-//  props: { server: process.env.serverDomain }
-//   }
-// }
 
 export default function Register(props) {
   const [user, setUser] = useState("");

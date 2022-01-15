@@ -49,10 +49,14 @@ userInit(seq);
 const synctable = () => {
     Post.sync({ alter: true })
         .then(() => {
+            console.log('Post table synced');
+        });
+    User.sync({ alter: true })
+        .then(() => {
             console.log('User table synced');
         });
 };
-//synctable();
+// synctable();
 
 
 const { Error } = require('./model/errors/Error');
