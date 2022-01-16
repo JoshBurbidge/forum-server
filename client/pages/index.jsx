@@ -4,7 +4,8 @@ import Header from '../components/Header';
 import axios from 'axios'
 import { getUserIdCookie } from '../util/cookie';
 import ArrowButton from '../components/ArrowButton';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { UserContext } from '../components/user-context';
 
 
 
@@ -13,15 +14,18 @@ export async function getServerSideProps(ctx) {
   const postsRes = await fetch(url);
   const allPosts = await postsRes.json();
 
-  // const { req, res } = ctx;
+  const { req, res } = ctx;
+  // console.log("cookie: ", getUserIdCookie(ctx));
 
   const meResponse = await axios.get(process.env.NEXT_PUBLIC_serverDomain + '/users/me', {
     withCredentials: true,
     headers: {
-      cookie: getUserIdCookie(ctx)
+      cookie: getUserIdCookie(req)
     }
   });
-  const { loggedIn, username } = meResponse.data;
+
+  let { loggedIn, username } = meResponse.data;
+  if (username === undefined) username = null;
   // console.log(meResponse.data);
 
   return {
@@ -48,9 +52,13 @@ export default function Home(props) {
     return newPosts;
   }
 
+
+
   return (
     <>
       <Header loggedIn={props.loggedIn} username={props.username} />
+
+
 
       <Container >
         <Stack paddingY={4} spacing={3}>

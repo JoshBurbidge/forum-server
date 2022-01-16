@@ -5,22 +5,23 @@ class Post extends Model {
 
 }
 
-Post.associate = function () {
-    Post.belongsTo(User);
-}
+// Post.associate = function () {
+//     Post.belongsTo(User);
+// }
 
 const postInit = (seq) => {
     Post.init({
-        userId: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-        },
-        username: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
+        // userId: {
+        //     type: DataTypes.INTEGER,
+        //     allowNull: false,
+
+        // },
+        // username: {
+        //     type: DataTypes.STRING,
+        //     allowNull: false
+        // },
         title: {
-            type: DataTypes.STRING(45),
+            type: DataTypes.STRING,
             allowNull: false
         },
         content: {
@@ -35,11 +36,3 @@ const postInit = (seq) => {
 }
 
 module.exports = { Post, postInit };
-
-
-
-// Post.sync()
-//     .then(() => {
-//         console.log('Post table synced');
-//         seq.close();
-//     })

@@ -59,7 +59,7 @@ export default function Login(props) {
             error={!!error} helperText={error} />
           <TextField name="password" label="Password" variant="outlined"
             onChange={e => setPass(e.target.value)} margin='normal' type='password' error={!!error} />
-          <Button type="submit" variant="contained" >Register</Button>
+          <Button type="submit" variant="contained" >Log In</Button>
         </Box>
       </Box>
 

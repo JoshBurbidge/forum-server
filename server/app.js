@@ -27,7 +27,7 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Credentials', true); // cookie doesn't work without this
     // if (req.cookies) console.log('cookies: ', req.cookies);
     if (req.signedCookies) console.log('signedCookies: ', req.signedCookies);
-
+    // console.log(req);
     next();
 });
 
@@ -45,6 +45,9 @@ const { Post, postInit } = require('./model/Post.js');
 const { User, userInit } = require('./model/User.js');
 postInit(seq);
 userInit(seq);
+seq.models.User.hasMany(seq.models.Post);
+seq.models.Post.belongsTo(seq.models.User);
+
 
 const synctable = () => {
     Post.sync({ alter: true })
@@ -56,7 +59,7 @@ const synctable = () => {
             console.log('User table synced');
         });
 };
-// synctable();
+//synctable();
 
 
 const { Error } = require('./model/errors/Error');

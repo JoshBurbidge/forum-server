@@ -8,10 +8,19 @@ const { User } = require('../model/User');
 
 router.get('/all', async (req, res) => {
     // console.log("offset: ", req.query.offset);
-    let dbquery = { limit: 10 };
-    if (req.query.offset) dbquery.offset = parseInt(req.query.offset);
+    //let dbquery = { limit: 10 };
+    let offset = 0;
+    if (req.query.offset) offset = parseInt(req.query.offset);
 
-    let posts = await Post.findAll(dbquery);
+    let posts = await Post.findAll({
+        limit: 10,
+        offset: offset,
+        include: {
+            model: User,
+            attributes: ['username']
+        }
+    }
+    );
 
     res.send(posts.map(p => p.toJSON()));
 });
@@ -19,9 +28,9 @@ router.get('/all', async (req, res) => {
 router.get('/byUser/:id', async (req, res) => {
     let posts = await Post.findAll({
         where: {
-            userId: req.params.id
+            UserId: req.params.id
         },
-        include: User
+        //include: User
     });
 
     // for (p in posts) {
@@ -37,8 +46,7 @@ router.post('/new', async (req, res) => {
 
     const newpost = await Post.create({
         title: req.body.title,
-        userId: req.body.userId,
-        username: req.body.username,
+        UserId: req.body.userId,
         content: req.body.content
     });
 
@@ -59,8 +67,7 @@ router.post('/:id/update', async (req, res) => {
 
     await post.update({
         title: req.body.title,
-        userId: req.body.userId,
-        username: req.body.username,
+        UserId: req.body.userId,
         content: req.body.content
     });
     res.send({

@@ -3,8 +3,18 @@ var router = express.Router();
 const shajs = require('sha.js');
 
 const { Error, FieldError } = require('../model/errors/Error');
+const { Post } = require('../model/Post');
 const { User } = require('../model/User');
 
+
+router.get('/byId/:id', async (req, res) => {
+    const userId = req.params.id;
+    const user = await User.findOne({
+        where: { id: userId },
+        //include: Post
+    });
+    res.send(user);
+})
 
 // need to login after register - get cookie
 router.post('/register', async (req, res) => {
@@ -106,7 +116,10 @@ router.post('/login', async (req, res) => {
         console.log(`added cookie: userId = ${userId}`);
         res.send({
             login: true,
-            user
+            "user": {
+                username: user.getDataValue('username'),
+                id: userId
+            }
         });
     }
 });
@@ -128,7 +141,7 @@ router.post('/logout', (req, res) => {
 });
 
 router.get('/me', async (req, res) => {
-    //console.log('headers: ', req.rawHeaders);
+    // console.log('headers: ', req.rawHeaders);
     const userId = req.signedCookies.userId;
     if (userId === undefined) {
         res.send({ loggedIn: false });
