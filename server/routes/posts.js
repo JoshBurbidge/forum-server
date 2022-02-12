@@ -50,7 +50,7 @@ router.post('/new', async (req, res) => {
     content: req.body.content
   });
 
-  console.log(newpost);
+  // console.log(newpost);
   res.send({ saved: true });
 })
 
