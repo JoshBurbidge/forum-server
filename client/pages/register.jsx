@@ -15,28 +15,34 @@ export default function Register(props) {
 
   const registerUser = async () => {
     console.log({ username: user, password: pass })
-    // try {
+
     return await axios.post(process.env.NEXT_PUBLIC_serverDomain + '/users/register', {
       username: user,
       password: pass
     }, { withCredentials: true });
-    //   return response;
-    // } catch (e) {
-    //   return e;
-    // }
   }
 
-  const login = () => {
-    axios.post(props.server + '/users/login', { //not getting cookie
-      username: user,
-      password: pass
-    })
+  const handleSubmit = function (e) {
+    e.preventDefault();
+    registerUser()
       .then(res => {
-        console.log(res)
+        console.log(res);
         router.push('/');
+      })
+      .catch(err => {
+        console.log(err);
+        if (err.response) {
+          const error = err.response.data.errors;
+          if (error.field === "username") {
+            setUserError(error.message);
+            setPassError("");
+          } else if (error.field === 'password') {
+            setPassError(error.message);
+            setUserError("");
+          }
+        }
       });
   }
-
 
   return (
 
@@ -51,38 +57,7 @@ export default function Register(props) {
           Sign up
         </Typography>
         <Box component="form" width='100%' sx={{ mt: 2, display: 'flex', flexDirection: 'column' }}
-          onSubmit={(e) => {
-            e.preventDefault();
-            registerUser()
-              .then(res => {
-                console.log(res);
-                // axios.post(process.env.NEXT_PUBLIC_serverDomain + '/users/login', { //not getting cookie
-                //   username: user,
-                //   password: pass
-                // }, { withCredentials: true }) // had to add credentials due to cookie
-                //   .then(res => {
-                //     console.log(res)
-                //     router.push('/');
-                //   })
-                //   .catch(err => {
-                //     console.log(err);
-                //   });
-                router.push('/');
-              })
-              .catch(err => {
-                console.log(err);
-                if (err.response) {
-                  const error = err.response.data.errors;
-                  if (error.field === "username") {
-                    setUserError(error.message);
-                    setPassError("");
-                  } else if (error.field === 'password') {
-                    setPassError(error.message);
-                    setUserError("");
-                  }
-                }
-              });
-          }}>
+          onSubmit={(e) => handleSubmit(e)}>
           <TextField name="username" label="Username" variant="outlined"
             onChange={e => setUser(e.target.value)} margin='normal'
             error={!!userError} helperText={userError} />

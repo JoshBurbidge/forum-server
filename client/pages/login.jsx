@@ -1,8 +1,7 @@
-import { TextField, Stack, Grid, Box, Button, CssBaseline, Container, Typography, createTheme, Link } from "@mui/material";
+import { TextField, Box, Button, Container, Typography } from "@mui/material";
 import axios from 'axios';
 import { useState } from "react";
 import { useRouter } from 'next/router'
-
 
 
 export default function Login(props) {
@@ -14,20 +13,29 @@ export default function Login(props) {
 
   const login = async () => {
     console.log({ username: user, password: pass })
-    // try {
     return await axios.post(process.env.NEXT_PUBLIC_serverDomain + '/users/login', {
       username: user,
       password: pass
     }, { withCredentials: true });
-    //   return response;
-    // } catch (e) {
-    //   return e;
-    // }
   }
 
+  const handleSubmit = function (e) {
+    e.preventDefault();
+    login()
+      .then(res => {
+        console.log(res);
+        router.push('/');
+      })
+      .catch(err => {
+        console.log(err.response);
+        if (err.response.data) {
+          const error = err.response.data.errors;
+          setError(error.message);
+        }
+      });
+  }
 
   return (
-
     <Container component='main' maxWidth="xs">
       <Box sx={{
         mt: 20,
@@ -35,25 +43,11 @@ export default function Login(props) {
         alignItems: 'center',
         flexDirection: 'column'
       }}>
-        <Typography component='h1' variant='h5'>
+        <Typography variant='h4'>
           Log in
         </Typography>
         <Box component="form" width='100%' sx={{ mt: 2, display: 'flex', flexDirection: 'column' }}
-          onSubmit={(e) => {
-            e.preventDefault();
-            login()
-              .then(res => {
-                console.log(res);
-                router.push('/');
-              })
-              .catch(err => {
-                console.log(err.response);
-                if (err.response.data) {
-                  const error = err.response.data.errors;
-                  setError(error.message);
-                }
-              });
-          }}>
+          onSubmit={(e) => handleSubmit(e)}>
           <TextField name="username" label="Username" variant="outlined"
             onChange={e => setUser(e.target.value)} margin='normal'
             error={!!error} helperText={error} />
@@ -62,7 +56,6 @@ export default function Login(props) {
           <Button type="submit" variant="contained" >Log In</Button>
         </Box>
       </Box>
-
     </Container >
   )
 }
