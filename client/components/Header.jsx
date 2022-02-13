@@ -4,16 +4,19 @@ import axios from 'axios';
 import { useRouter } from "next/router";
 import { UserContext } from "../components/user-context";
 import { useContext } from "react";
+import { useCookies } from "react-cookie";
 
 // use context instead of props to determine header links,
 // so we don't have to fetch /me for every page
 export default function Header(props) {
   const router = useRouter();
-  const user = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
+  const [cookies, setCookie, removeCookie] = useCookies([])
 
 
   let links;
-  if (!props.loggedIn) {
+  // if (!props.loggedIn) {
+  if (!user.loggedIn) {
     links = (
       <>
         <Typography marginX={2}>
@@ -33,17 +36,19 @@ export default function Header(props) {
     links = (<>
       <Typography marginX={2}>
         <NextLink href='/dashboard' >
-          {props.username}
+          {user.username}
         </NextLink >
       </Typography>
 
-      <Typography marginX={2} >
+      <Typography marginX={2}>
         {/* logout link, redirects to index */}
         <Link component="button" underline="none" color="inherit" variant="body1">
-          <a onClick={async () => {
+          <span onClick={async () => {
             await axios.post(process.env.NEXT_PUBLIC_serverDomain + '/users/logout', {}, { withCredentials: true });
+            // removeCookie("userId");
+            setUser({ loggedIn: false, username: null })
             router.push('/');
-          }} >log out</a>
+          }} >log out</span>
         </Link>
       </Typography>
     </>);
@@ -51,8 +56,9 @@ export default function Header(props) {
 
 
   return (
-    <Box width="100%" padding={3} bgcolor="lightblue" sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-      {user.name}
+    <Box width="100%" padding={3} bgcolor="primary.bg" sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+      <Typography marginX={2}><NextLink href={'/'}>Home</NextLink></Typography>
+
       {links}
     </Box>
   )

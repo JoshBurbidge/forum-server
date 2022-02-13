@@ -1,22 +1,43 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Link, Card } from "@mui/material";
 import NextLink from "next/link";
-
+import { useState } from 'react'
+import { useTheme } from "@mui/material";
 
 
 export default function Post(props) {
   // console.log(props);
+  // const theme = useTheme()
+  const [hover, setHover] = useState(false);
 
+  let cardStyle = {}
+  if (hover) {
+    cardStyle = {
+      borderColor: 'black'
+    }
+  } else {
+    cardStyle = {
+      borderColor: 'transparent'
+    }
+  }
+
+  const toggleHover = function () {
+    setHover(!hover);
+  }
 
   return (
-    <Box border="solid thin black" sx={{}}>
+    <Card onMouseEnter={() => toggleHover()} onMouseLeave={() => toggleHover()}
+      sx={{ border: 1, ...cardStyle }}>
       <Typography pl={1} variant="subtitle2">
         posted by {props.post.User.username}
       </Typography>
-      <Typography pt={1} pb={2} px={2} component='h2' variant='h6'>
-        <NextLink href={"/posts/" + props.post.id}>
-          {props.post.title}
+
+      <Typography p={2} variant='h6'>
+        <NextLink href={"/posts/" + props.post.id} passHref>
+          <Link underline={'hover'} color={'black'}>
+            {props.post.title}
+          </Link>
         </NextLink>
       </Typography>
-    </Box>
+    </Card>
   );
 }

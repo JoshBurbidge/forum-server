@@ -56,7 +56,7 @@ export default function Home(props) {
 
   return (
     <>
-      <Header loggedIn={props.loggedIn} username={props.username} />
+      {/* <Header loggedIn={props.loggedIn} username={props.username} /> */}
 
 
 

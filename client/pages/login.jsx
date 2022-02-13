@@ -1,20 +1,24 @@
 import { TextField, Box, Button, Container, Typography } from "@mui/material";
 import axios from 'axios';
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useRouter } from 'next/router'
+import { useCookies } from "react-cookie";
+import { UserContext } from "../components/user-context";
 
 
 export default function Login(props) {
-  const [user, setUser] = useState("");
+  const [username, setUsername] = useState("");
   const [pass, setPass] = useState("");
   const [error, setError] = useState();
   const router = useRouter();
+  const { user, setUser } = useContext(UserContext);
+  const [cookies, setCookie, removeCookie] = useCookies();
 
 
   const login = async () => {
-    console.log({ username: user, password: pass })
+    console.log({ username: username, password: pass })
     return await axios.post(process.env.NEXT_PUBLIC_serverDomain + '/users/login', {
-      username: user,
+      username: username,
       password: pass
     }, { withCredentials: true });
   }
@@ -24,6 +28,10 @@ export default function Login(props) {
     login()
       .then(res => {
         console.log(res);
+        const { username } = res.data.user
+        console.log(username)
+        setUser({ username: username, loggedIn: true });
+        // setCookie('test', 'abc');
         router.push('/');
       })
       .catch(err => {
@@ -37,11 +45,13 @@ export default function Login(props) {
 
   return (
     <Container component='main' maxWidth="xs">
+      {/* <Button onClick={() => setUser({ username: "hello", loggedIn: true })}>change user</Button> */}
       <Box sx={{
         mt: 20,
         display: 'flex',
         alignItems: 'center',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        bgcolor: 'common.white', borderRadius: 4, p: 4
       }}>
         <Typography variant='h4'>
           Log in
@@ -49,8 +59,8 @@ export default function Login(props) {
         <Box component="form" width='100%' sx={{ mt: 2, display: 'flex', flexDirection: 'column' }}
           onSubmit={(e) => handleSubmit(e)}>
           <TextField name="username" label="Username" variant="outlined"
-            onChange={e => setUser(e.target.value)} margin='normal'
-            error={!!error} helperText={error} />
+            onChange={e => setUsername(e.target.value)} margin='normal'
+            error={!!error} helperText={error} autoFocus />
           <TextField name="password" label="Password" variant="outlined"
             onChange={e => setPass(e.target.value)} margin='normal' type='password' error={!!error} />
           <Button type="submit" variant="contained" >Log In</Button>
