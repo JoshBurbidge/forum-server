@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var cors = require('cors');
 require('dotenv').config();
 
 var indexRouter = require('./routes/index');
@@ -20,11 +21,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(process.env.cookiesecret));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors({
+  origin: true,
+  credentials: true,
+}))
 app.use((req, res, next) => {
-  // added these headers due to errors making requests from client
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3001');
-  res.header('Access-Control-Allow-Headers', 'content-type, origin, x-requested-with, accept, x-pingother, *');
-  res.header('Access-Control-Allow-Credentials', true); // cookie doesn't work without this
+  // res.header('Access-Control-Allow-Origin', 'http://localhost:3001');
+  // res.header('Access-Control-Allow-Headers', 'content-type, origin, x-requested-with, accept, x-pingother, *');
+  // res.header('Access-Control-Allow-Credentials', true); // cookie doesn't work without this
   // if (req.cookies) console.log('cookies: ', req.cookies);
   if (req.signedCookies) console.log('signedCookies: ', req.signedCookies);
   // console.log(req);
