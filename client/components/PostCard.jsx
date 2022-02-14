@@ -12,7 +12,8 @@ export default function Post(props) {
   let cardStyle = {}
   if (hover) {
     cardStyle = {
-      borderColor: 'black'
+      borderColor: 'black',
+
     }
   } else {
     cardStyle = {
@@ -25,19 +26,21 @@ export default function Post(props) {
   }
 
   return (
-    <Card onMouseEnter={() => toggleHover()} onMouseLeave={() => toggleHover()}
-      sx={{ border: 1, ...cardStyle }}>
-      <Typography pl={1} variant="subtitle2">
-        posted by {props.post.User.username}
-      </Typography>
+    <NextLink href={"/posts/" + props.post.id} passHref>
+      <Link underline={'none'} color={'black'}>
 
-      <Typography p={2} variant='h6'>
-        <NextLink href={"/posts/" + props.post.id} passHref>
-          <Link underline={'hover'} color={'black'}>
+        <Card onMouseEnter={() => toggleHover()} onMouseLeave={() => toggleHover()}
+          sx={{ border: 1, ...cardStyle }}>
+          <Typography pl={1} variant="subtitle2">
+            posted by {props.post.User.username}
+          </Typography>
+
+          <Typography p={2} variant='h6'>
             {props.post.title}
-          </Link>
-        </NextLink>
-      </Typography>
-    </Card>
+          </Typography>
+        </Card>
+      </Link>
+    </NextLink >
+
   );
 }

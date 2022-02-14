@@ -1,11 +1,10 @@
-import { Box, Container, Stack, Typography } from '@mui/material'
+import { Box, Container, Stack } from '@mui/material'
 import PostCard from '../components/PostCard';
-import Header from '../components/Header';
 import axios from 'axios'
 import { getUserIdCookie } from '../util/cookie';
 import ArrowButton from '../components/ArrowButton';
 import { useState, useContext } from 'react';
-import { UserContext } from '../components/user-context';
+import { UserContext } from '../components/UserContext';
 
 
 

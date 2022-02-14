@@ -2,7 +2,7 @@ import { Box, Typography, Link } from "@mui/material";
 import NextLink from "next/link"
 import axios from 'axios';
 import { useRouter } from "next/router";
-import { UserContext } from "../components/user-context";
+import { UserContext } from "./UserContext";
 import { useContext } from "react";
 import { useCookies } from "react-cookie";
 
@@ -45,7 +45,8 @@ export default function Header(props) {
         <Link component="button" underline="none" color="inherit" variant="body1">
           <span onClick={async () => {
             await axios.post(process.env.NEXT_PUBLIC_serverDomain + '/users/logout', {}, { withCredentials: true });
-            // removeCookie("userId");
+            // removeCookie('userId')
+            removeCookie("test");
             setUser({ loggedIn: false, username: null })
             router.push('/');
           }} >log out</span>

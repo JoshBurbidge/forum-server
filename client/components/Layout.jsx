@@ -1,12 +1,17 @@
 import Header from "./Header"
 import { useCookies } from "react-cookie"
-import { UserContext } from "./user-context";
+import { UserContext } from "./UserContext";
 import { useContext, useState } from "react";
 
 export default function Layout({ children }) {
   const [cookies, setCookie, removeCookie] = useCookies([]);
   // console.log(cookies)
-  const [user, setUser] = useState({ username: null, loggedIn: false })
+
+  // set this state based on cookies, need to get username
+  let state = { username: null, loggedIn: false }
+  if (cookies.userId) state = { username: "something", loggedIn: true };
+
+  const [user, setUser] = useState(state)
 
   return (
     <>
@@ -17,7 +22,3 @@ export default function Layout({ children }) {
     </>
   )
 }
-
-// user status is determined by cookie
-// can i check cookie in layout? or _app?
-// 

@@ -5,7 +5,7 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import Layout from '../components/Layout';
-import { CookiesProvider, useCookies, Cookies } from "react-cookie";
+import { CookiesProvider, useCookies } from "react-cookie";
 import { createTheme, ThemeProvider } from "@mui/material/styles"
 import { blue } from "@mui/material/colors"
 
@@ -22,7 +22,7 @@ function MyApp({ Component, pageProps }) {
     }
   });
   // theme.palette.primary.bg = blue[100]
-  console.log(theme)
+  // console.log(theme)
 
   return (
     <>

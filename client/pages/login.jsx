@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useState, useContext } from "react";
 import { useRouter } from 'next/router'
 import { useCookies } from "react-cookie";
-import { UserContext } from "../components/user-context";
+import { UserContext } from "../components/UserContext";
 
 
 export default function Login(props) {
@@ -29,9 +29,8 @@ export default function Login(props) {
       .then(res => {
         console.log(res);
         const { username } = res.data.user
-        console.log(username)
         setUser({ username: username, loggedIn: true });
-        // setCookie('test', 'abc');
+        setCookie('test', 'abc');
         router.push('/');
       })
       .catch(err => {
@@ -51,7 +50,7 @@ export default function Login(props) {
         display: 'flex',
         alignItems: 'center',
         flexDirection: 'column',
-        bgcolor: 'common.white', borderRadius: 4, p: 4
+        bgcolor: 'common.white', borderRadius: 4, p: 4, boxShadow: 3
       }}>
         <Typography variant='h4'>
           Log in
