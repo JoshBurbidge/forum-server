@@ -1,10 +1,11 @@
-import { Box, Container, Stack } from '@mui/material'
+import { Box, Button, Container, Stack } from '@mui/material'
 import PostCard from '../components/PostCard';
 import axios from 'axios'
 import { getUserIdCookie } from '../util/cookie';
 import ArrowButton from '../components/ArrowButton';
 import { useState, useContext } from 'react';
 import { UserContext } from '../components/UserContext';
+import NextLink from "next/link"
 
 
 
@@ -58,9 +59,12 @@ export default function Home(props) {
       {/* <Header loggedIn={props.loggedIn} username={props.username} /> */}
 
 
-
       <Container >
-        <Stack paddingY={4} spacing={3}>
+        <NextLink href={'/posts/new'}>
+          <Button variant='contained' sx={{ mt: 3 }}>New Post</Button>
+        </NextLink>
+
+        <Stack paddingY={3} spacing={3}>
           {postsList}
           <ArrowButton onClick={async () => {
             const newposts = await getNextPage();

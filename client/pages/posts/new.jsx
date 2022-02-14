@@ -10,7 +10,6 @@ export default function NewPost(props) {
 
 
   return (<>
-    <Header />
     <Container sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
 
       <Box component="form" maxWidth={'md'} sx={{ width: '100%' }}>
@@ -19,11 +18,12 @@ export default function NewPost(props) {
         </Typography>
         <TextField name="title" label="Title" variant="outlined"
           onChange={e => setTitle(e.target.value)} margin='normal'
-          sx={{ width: '50%' }}
+          sx={{ width: '50%', bgcolor: 'common.white' }} autoFocus
         />
 
         <TextField multiline rows={6} fullWidth name="content" label="Content" variant="outlined"
           onChange={e => setContent(e.target.value)} margin='normal'
+          sx={{ bgcolor: 'common.white' }}
         />
 
       </Box>
