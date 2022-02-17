@@ -25,6 +25,20 @@ router.get('/all', async (req, res) => {
   res.send(posts.map(p => p.toJSON()));
 });
 
+router.get('/byId/:id', async (req, res) => {
+  let post = await Post.findOne({
+    where: {
+      id: req.params.id
+    },
+    include: {
+      model: User,
+      attributes: ['username']
+    }
+  })
+
+  res.send(post.toJSON());
+})
+
 router.get('/byUser/:id', async (req, res) => {
   let posts = await Post.findAll({
     where: {
