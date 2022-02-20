@@ -1,11 +1,25 @@
 import { Box, Button, Container, Grid, TextField, Typography } from "@mui/material";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import axios from "axios";
+import { UserContext } from "../../components/UserContext";
+import { useRouter } from "next/router";
+
+export async function getServerSideProps() {
+
+
+  return {
+    props: {
+      protected: true
+    }
+  }
+}
 
 export default function NewPost(props) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const router = useRouter();
 
+  // TODO set correct user id
   const handleSubmit = async function (e) {
     const res = await axios.post(process.env.NEXT_PUBLIC_serverDomain + '/posts/new', {
       title: title,
@@ -15,7 +29,14 @@ export default function NewPost(props) {
     console.log(res);
 
   }
+  // const [loading, setLoading] = useState(false)
+  // const user = useContext(UserContext).user;
+  // console.log(user)
+  // if (user.loggedIn === false) {
+  //   router.push("/login")
+  // }
 
+  // if (!user || user.loggedIn === false) return <></>
 
   return (<>
     <Container sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>

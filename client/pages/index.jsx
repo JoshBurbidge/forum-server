@@ -17,22 +17,20 @@ export async function getServerSideProps(ctx) {
   const { req, res } = ctx;
   // console.log("cookie: ", getUserIdCookie(ctx));
 
-  const meResponse = await axios.get(process.env.NEXT_PUBLIC_serverDomain + '/users/me', {
-    withCredentials: true,
-    headers: {
-      cookie: getUserIdCookie(req)
-    }
-  });
+  // const meResponse = await axios.get(process.env.NEXT_PUBLIC_serverDomain + '/users/me', {
+  //   withCredentials: true,
+  //   headers: {
+  //     cookie: getUserIdCookie(req)
+  //   }
+  // });
 
-  let { loggedIn, username } = meResponse.data;
-  if (username === undefined) username = null;
+  // let { loggedIn, username } = meResponse.data;
+  // if (username === undefined) username = null;
   // console.log(meResponse.data);
 
   return {
     props: {
       posts: allPosts,
-      loggedIn: loggedIn,
-      username: username
     }
   };
 }
@@ -52,17 +50,18 @@ export default function Home(props) {
     return newPosts;
   }
 
-
+  // const { loggedIn } = useContext(UserContext).user;
+  // console.log(loggedIn)
 
   return (
     <>
-      {/* <Header loggedIn={props.loggedIn} username={props.username} /> */}
-
 
       <Container >
+        {/* {loggedIn && */}
         <NextLink href={'/posts/new'}>
           <Button variant='contained' sx={{ mt: 3 }}>New Post</Button>
         </NextLink>
+        {/* } */}
 
         <Stack paddingY={3} spacing={3}>
           {postsList}

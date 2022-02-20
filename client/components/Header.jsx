@@ -16,7 +16,7 @@ export default function Header(props) {
 
   let links;
   // if (!props.loggedIn) {
-  if (!user.loggedIn) {
+  if (!user || !user.loggedIn) {
     links = (
       <>
         <Typography marginX={2}>

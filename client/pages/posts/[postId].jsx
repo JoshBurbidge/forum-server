@@ -1,3 +1,4 @@
+import { Typography } from "@mui/material"
 import { useRouter } from "next/router";
 import axios from "axios";
 
@@ -18,8 +19,9 @@ export default function Post(props) {
   // const router = useRouter();
   // const { postId } = router.query;
   return (<>
-    <p>Title: {props.post.title}</p>
-    <p>Content: {props.post.content}</p>
-    <p>Author: {props.post.User.username}</p>
+    <Typography>Title: {props.post.title}</Typography>
+    <Typography>Content: {props.post.content}</Typography>
+    <Typography>Author: {props.post.User.username}</Typography>
+
   </>)
 }
