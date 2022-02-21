@@ -51,9 +51,10 @@ export default function Register(props) {
         mt: 20,
         display: 'flex',
         alignItems: 'center',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        bgcolor: 'common.white', borderRadius: 4, p: 4, boxShadow: 3
       }}>
-        <Typography component='h1' variant='h5'>
+        <Typography variant='h4'>
           Sign up
         </Typography>
         <Box component="form" width='100%' sx={{ mt: 2, display: 'flex', flexDirection: 'column' }}
@@ -64,7 +65,7 @@ export default function Register(props) {
           <TextField name="password" label="Password" variant="outlined"
             onChange={e => setPass(e.target.value)} margin='normal' type='password'
             error={!!passError} helperText={passError} />
-          <Button type="submit" variant="contained" >Register</Button>
+          <Button type="submit" variant="contained">Register</Button>
         </Box>
       </Box>
 
