@@ -11,6 +11,7 @@ import NextLink from "next/link"
 
 export async function getServerSideProps(ctx) {
   const url = process.env.NEXT_PUBLIC_serverDomain + "/posts/all";
+  console.log(url);
   const postsRes = await fetch(url);
   const allPosts = await postsRes.json();
 
