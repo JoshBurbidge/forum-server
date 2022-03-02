@@ -42,7 +42,7 @@ app.use('/users', usersRouter);
 // initialize sequelize
 const { Sequelize } = require('sequelize');
 const seq = new Sequelize('mydb', process.env.mysql_user, process.env.mysql_pass, {
-  host: 'localhost',
+  host: process.env.database || 'localhost',
   dialect: 'mysql'
 });
 const { Post, postInit } = require('./model/Post.js');

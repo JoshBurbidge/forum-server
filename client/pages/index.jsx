@@ -37,7 +37,7 @@ export async function getServerSideProps(ctx) {
 
 
 export default function Home(props) {
-  //console.log(props);
+  console.log(props);
   const [currentPosts, setCurrentPosts] = useState(props.posts);
 
   let postsList = currentPosts.map(post => {

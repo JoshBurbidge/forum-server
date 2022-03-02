@@ -1,4 +1,4 @@
-import { Box, Typography, Link } from "@mui/material";
+import { Box, Typography, Link, AppBar, ToolBar } from "@mui/material";
 import NextLink from "next/link"
 import axios from 'axios';
 import { useRouter } from "next/router";
@@ -58,9 +58,13 @@ export default function Header(props) {
 
   return (
     <Box width="100%" padding={3} bgcolor="primary.bg" sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-      <Typography marginX={2}><NextLink href={'/'}>Home</NextLink></Typography>
 
+
+      <Typography marginX={2}><NextLink href={'/'}>Home</NextLink></Typography>
       {links}
+
+
+
     </Box>
   )
 }
