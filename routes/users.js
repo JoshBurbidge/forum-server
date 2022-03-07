@@ -6,6 +6,7 @@ const { Error, FieldError } = require('../model/errors/Error');
 const { Post } = require('../model/Post');
 const { User } = require('../model/User');
 
+//TODO add query for all users - maybe
 
 router.get('/byId/:id', async (req, res) => {
   const userId = req.params.id;
@@ -45,7 +46,6 @@ router.post('/register', async (req, res) => {
   }
 
   const hashed = shajs('sha256').update(req.body.password).digest('base64');
-  // add salting
 
   try {
     const newuser = await User.create({
@@ -91,8 +91,9 @@ router.post('/login', async (req, res) => {
     return;
   }
 
+  // TODO change hashing
   const hashed = shajs('sha256').update(req.body.password).digest('base64');
-  // add salting
+
   const user = await User.findOne({
     where: {
       username: req.body.username,
