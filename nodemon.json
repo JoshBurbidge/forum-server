@@ -1,0 +1,7 @@
+{
+  "exec": "npm run start:dev",
+  "ignore": [
+    "lib/**",
+    "*.json"
+  ]
+}
