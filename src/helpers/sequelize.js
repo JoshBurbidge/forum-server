@@ -1,4 +1,5 @@
-const { Sequelize } = require('sequelize');
+// const { Sequelize } = require('sequelize');
+import Sequelize from 'sequelize'
 const { Post, postInit } = require('../model/Post.js');
 const { User, userInit } = require('../model/User.js');
 

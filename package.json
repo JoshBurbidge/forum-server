@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "dev": "nodemon ./bin/www"
+    "dev": "nodemon ./bin/www",
+    "build": "babel src -d lib"
   },
   "dependencies": {
     "@babel/cli": "^7.23.9",
@@ -24,6 +25,7 @@
     "sha.js": "^2.4.11"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.23.9",
     "nodemon": "^2.0.15"
   }
 }
