@@ -6,6 +6,28 @@ import { Post } from '../model/Post';
 
 const router = express.Router();
 
+router.get('/me', async (req, res) => {
+  // console.log('headers: ', req.rawHeaders);
+  const userId = req.signedCookies.userId;
+  console.log('userId' + userId);
+  if (userId === undefined) {
+    res.send({ loggedIn: false });
+    return;
+  }
+
+  const user = await User.findOne({ where: { id: userId } });
+  console.log({
+    loggedIn: true,
+    id: userId,
+    username: user.getDataValue('username')
+  });
+  res.send({
+    loggedIn: true,
+    id: userId,
+    username: user.getDataValue('username')
+  });
+});
+
 router.get('/:id', async (req, res) => {
   const userId = req.params.id;
   const user = await User.findOne({
@@ -134,22 +156,6 @@ router.post('/logout', (req, res) => {
       errors: new Error('no user is logged in')
     });
   }
-});
-
-router.get('/me', async (req, res) => {
-  // console.log('headers: ', req.rawHeaders);
-  const userId = req.signedCookies.userId;
-  if (userId === undefined) {
-    res.send({ loggedIn: false });
-    return;
-  }
-
-  const user = await User.findOne({ where: { id: userId } });
-  res.send({
-    loggedIn: true,
-    id: userId,
-    username: user.getDataValue('username')
-  });
 });
 
 
