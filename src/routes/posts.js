@@ -1,10 +1,9 @@
-var express = require('express');
-var router = express.Router();
+import express from 'express';
+import { Post } from '../model/Post';
+import { Error, FieldError } from '../model/errors/Error';
+import { User }  from '../model/User';
 
-const { Post } = require('../model/Post');
-const { Error, FieldError } = require('../model/errors/Error');
-const { User } = require('../model/User');
-
+const router = express.Router();
 
 router.get('/all', async (req, res) => {
   // console.log("offset: ", req.query.offset);

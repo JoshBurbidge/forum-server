@@ -1,9 +1,9 @@
-var express = require('express');
-var router = express.Router();
-const shajs = require('sha.js');
+import express from 'express';
+import shajs from 'sha.js';
+import { Error, FieldError } from '../model/errors/Error';
+import { User } from '../model/User';
 
-const { Error, FieldError } = require('../model/errors/Error');
-const { User } = require('../model/User');
+const router = express.Router();
 
 //TODO add query for all users - maybe
 

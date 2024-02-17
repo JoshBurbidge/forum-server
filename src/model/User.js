@@ -1,4 +1,4 @@
-const { DataTypes, Model } = require('sequelize');
+import { DataTypes, Model } from 'sequelize';
 
 class User extends Model {
 }

@@ -1,7 +1,6 @@
-// const { Sequelize } = require('sequelize');
 import Sequelize from 'sequelize';
-const { Post, postInit } = require('../model/Post.js');
-const { User, userInit } = require('../model/User.js');
+import { Post, postInit } from '../model/Post.js';
+import { User, userInit } from '../model/User.js';
 
 const synctable = async () => {
   await Post.sync({ alter: true });
