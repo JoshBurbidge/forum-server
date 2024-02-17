@@ -19,7 +19,7 @@ router.get('/byId/:id', async (req, res) => {
 
 // need to login after register - get cookie
 router.post('/register', async (req, res) => {
-  // console.log(req.body);
+  console.log(req.body);
 
   if (req.body.username.length < 3) {
     res.status(400);
@@ -57,6 +57,7 @@ router.post('/register', async (req, res) => {
     });
     res.send(newuser);
   } catch (error) {
+    console.log(error)
     if (error.parent.code === 'ER_DUP_ENTRY') {
       res.status(400);
       res.send({ errors: new FieldError('username', 'username already taken') });

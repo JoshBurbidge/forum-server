@@ -39,31 +39,9 @@ app.use('/', indexRouter);
 app.use('/posts', postsRouter);
 app.use('/users', usersRouter);
 
-// initialize sequelize
-const { Sequelize } = require('sequelize');
-const seq = new Sequelize('forum', process.env.mysql_user, process.env.mysql_pass, {
-  host: process.env.database || 'localhost',
-  dialect: 'mysql'
-});
-const { Post, postInit } = require('./model/Post.js');
-const { User, userInit } = require('./model/User.js');
-postInit(seq);
-userInit(seq);
-seq.models.User.hasMany(seq.models.Post);
-seq.models.Post.belongsTo(seq.models.User);
+const { sequelizeInit } = require('./helpers/sequelize');
 
-
-const synctable = () => {
-  Post.sync({ alter: true })
-    .then(() => {
-      console.log('Post table synced');
-    });
-  User.sync({ alter: true })
-    .then(() => {
-      console.log('User table synced');
-    });
-};
-//synctable();
+sequelizeInit()
 
 
 const { Error } = require('./model/errors/Error');

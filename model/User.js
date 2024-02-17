@@ -1,16 +1,7 @@
 const { DataTypes, Model } = require('sequelize');
 
-// change models to sequelize.define() syntax to use assocations
-
 class User extends Model {
-  // associate = (models) => {
-  //     User.hasMany(models.Post, { foreignKey: 'userId' });
-  // }
 }
-
-// User.associate = function () {
-//     User.hasMany(Post, { foreignKey: 'userId' });
-// }
 
 const userInit = (seq) => {
   User.init({
