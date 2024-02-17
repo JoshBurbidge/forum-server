@@ -19,6 +19,6 @@ const postInit = (seq) => {
     modelName: 'Post',
 
   });
-}
+};
 
 module.exports = { Post, postInit };

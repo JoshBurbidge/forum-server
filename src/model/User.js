@@ -18,5 +18,5 @@ const userInit = (seq) => {
     sequelize: seq,
     modelName: 'User'
   });
-}
+};
 module.exports = { User, userInit };

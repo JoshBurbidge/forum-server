@@ -4,8 +4,6 @@ class Error {
   constructor(message) {
     this.message = message;
   }
-
-
 }
 
 class FieldError extends Error {
@@ -16,4 +14,4 @@ class FieldError extends Error {
 }
 
 
-module.exports = { FieldError, Error }
+module.exports = { FieldError, Error };

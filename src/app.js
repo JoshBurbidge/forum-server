@@ -24,7 +24,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors({
   origin: true,
   credentials: true,
-}))
+}));
 app.use((req, res, next) => {
   // res.header('Access-Control-Allow-Origin', 'http://localhost:3001');
   // res.header('Access-Control-Allow-Headers', 'content-type, origin, x-requested-with, accept, x-pingother, *');
@@ -41,7 +41,7 @@ app.use('/users', usersRouter);
 
 const { sequelizeInit } = require('./helpers/sequelize');
 
-sequelizeInit()
+sequelizeInit();
 
 
 const { Error } = require('./model/errors/Error');
@@ -60,8 +60,10 @@ app.use(function (err, req, res, next) {
   // res.locals.message = err.message;
   // res.locals.error = req.app.get('env') === 'development' ? err : {};
 
+  console.log(err);
+
   res.status(404);
-  res.send({ errors: err });
+  res.send(createError(404));
 });
 
 module.exports = app;

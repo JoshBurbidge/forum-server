@@ -27,23 +27,19 @@ router.get('/all', async (req, res) => {
 
 router.get('/byId/:id', async (req, res) => {
   let post = await Post.findOne({
-    where: {
-      id: req.params.id
-    },
+    where: { id: req.params.id },
     include: {
       model: User,
       attributes: ['username']
     }
-  })
+  });
 
   res.send(post.toJSON());
-})
+});
 
 router.get('/byUser/:id', async (req, res) => {
   let posts = await Post.findAll({
-    where: {
-      UserId: req.params.id
-    },
+    where: { UserId: req.params.id },
     //include: User
   });
 
@@ -66,7 +62,7 @@ router.post('/new', async (req, res) => {
 
   // console.log(newpost);
   res.send({ saved: true });
-})
+});
 
 router.post('/:id/update', async (req, res) => {
   const id = req.params.id;
@@ -88,7 +84,7 @@ router.post('/:id/update', async (req, res) => {
     message: 'updated',
     data: post.toJSON()
   });
-})
+});
 
 router.delete('/:id/delete', async (req, res) => {
   const id = req.params.id;
@@ -108,6 +104,6 @@ router.delete('/:id/delete', async (req, res) => {
     message: 'deleted',
     data: post.toJSON()
   });
-})
+});
 
 module.exports = router;
