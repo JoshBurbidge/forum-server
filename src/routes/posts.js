@@ -1,31 +1,27 @@
 import express from 'express';
 import { Post } from '../model/Post';
-import { Error, FieldError } from '../model/errors/Error';
 import { User }  from '../model/User';
+import createHttpError from 'http-errors';
 
 const router = express.Router();
 
-router.get('/all', async (req, res) => {
-  // console.log("offset: ", req.query.offset);
-  //let dbquery = { limit: 10 };
-  let offset = 0;
-  if (req.query.offset) offset = parseInt(req.query.offset);
+router.get('', async (req, res) => {
+  const offset = req.query.offset ? parseInt(req.query.offset) : 0;
 
-  let posts = await Post.findAll({
+  const posts = await Post.findAll({
     limit: 10,
     offset: offset,
     include: {
       model: User,
       attributes: ['username']
     }
-  }
-  );
+  });
 
   res.send(posts.map(p => p.toJSON()));
 });
 
-router.get('/byId/:id', async (req, res) => {
-  let post = await Post.findOne({
+router.get('/:id', async (req, res) => {
+  const post = await Post.findOne({
     where: { id: req.params.id },
     include: {
       model: User,
@@ -33,24 +29,16 @@ router.get('/byId/:id', async (req, res) => {
     }
   });
 
+  if (!post) {
+    res.status(404);
+    res.send(createHttpError(404));
+    return;
+  }
+
   res.send(post.toJSON());
 });
 
-router.get('/byUser/:id', async (req, res) => {
-  let posts = await Post.findAll({
-    where: { UserId: req.params.id },
-    //include: User
-  });
-
-  // for (p in posts) {
-  //     console.log(p.getUser());
-  // }
-
-  res.send(posts.map(p => p.toJSON()));
-});
-
-
-router.post('/new', async (req, res) => {
+router.post('', async (req, res) => {
   console.log(req.body);
 
   const newpost = await Post.create({
@@ -59,50 +47,38 @@ router.post('/new', async (req, res) => {
     content: req.body.content
   });
 
-  // console.log(newpost);
-  res.send({ saved: true });
+  res.send(newpost);
 });
 
-router.post('/:id/update', async (req, res) => {
+router.put('/:id', async (req, res) => {
   const id = req.params.id;
   const post = await Post.findByPk(id);
   if (!post) {
-    res.send({
-      errors:
-        new FieldError('id', `post with ${id} not found`)
-    });
+    res.status(404);
+    res.send(createHttpError(404));
     return;
   }
 
   await post.update({
     title: req.body.title,
-    UserId: req.body.userId,
     content: req.body.content
   });
-  res.send({
-    message: 'updated',
-    data: post.toJSON()
-  });
+  res.send(post.toJSON());
 });
 
-router.delete('/:id/delete', async (req, res) => {
+router.delete('/:id', async (req, res) => {
   const id = req.params.id;
   const post = await Post.findByPk(id);
   if (!post) {
     res.status(404);
-    res.send({
-      errors:
-        new Error('id', `post with ${id} not found`)
-    });
+    res.send(createHttpError(404));
     return;
   }
 
-  post.destroy();
+  await post.destroy();
 
-  res.send({
-    message: 'deleted',
-    data: post.toJSON()
-  });
+  res.status(204);
+  res.send();
 });
 
 module.exports = router;

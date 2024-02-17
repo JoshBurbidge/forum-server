@@ -2,18 +2,26 @@ import express from 'express';
 import shajs from 'sha.js';
 import { Error, FieldError } from '../model/errors/Error';
 import { User } from '../model/User';
+import { Post } from '../model/Post';
 
 const router = express.Router();
 
-//TODO add query for all users - maybe
-
-router.get('/byId/:id', async (req, res) => {
+router.get('/:id', async (req, res) => {
   const userId = req.params.id;
   const user = await User.findOne({
     where: { id: userId },
     //include: Post
   });
   res.send(user);
+});
+
+router.get('/:id/posts', async (req, res) => {
+  const posts = await Post.findAll({
+    where: { UserId: req.params.id },
+    //include: User
+  });
+
+  res.send(posts.map(p => p.toJSON()));
 });
 
 // need to login after register - get cookie
@@ -83,7 +91,6 @@ router.post('/login', async (req, res) => {
     return;
   }
 
-  // TODO change hashing
   const hashed = shajs('sha256').update(req.body.password).digest('base64');
 
   const user = await User.findOne({
