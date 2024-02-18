@@ -40,7 +40,7 @@ router.get('/:id', async (req, res) => {
 router.get('/:id/posts', async (req, res) => {
   const posts = await Post.findAll({
     where: { UserId: req.params.id },
-    //include: User
+    include: User
   });
 
   res.send(posts.map(p => p.toJSON()));
