@@ -2,7 +2,7 @@ import config from 'config';
 import Sequelize from 'sequelize';
 import { Post, postInit } from '../model/Post.js';
 import { User, userInit } from '../model/User.js';
-import { getSecret } from '../utils/secrets.js';
+import { getSecretObject } from '../utils/secrets.js';
 
 export const syncTables = async () => {
   await User.sync({ alter: true });
@@ -12,9 +12,9 @@ export const syncTables = async () => {
 };
 
 export async function sequelizeInit() {
-  const { username, password } = await getSecret('databaseCredentials');
+  const { username, password } = await getSecretObject('databaseCredentials');
 
-  const seq = new Sequelize('forum2', username, password, {
+  const seq = new Sequelize('forum', username, password, {
     host: config.get('databaseHost'),
     dialect: 'mysql'
   });
