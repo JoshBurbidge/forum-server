@@ -1,18 +1,21 @@
+import config from 'config';
 import Sequelize from 'sequelize';
 import { Post, postInit } from '../model/Post.js';
 import { User, userInit } from '../model/User.js';
+import { getSecret } from '../utils/secrets.js';
 
-const syncTables = async () => {
+export const syncTables = async () => {
   await User.sync({ alter: true });
   console.log('User table synced');
   await Post.sync({ alter: true });
   console.log('Post table synced');
 };
 
-function sequelizeInit() {
-  // initialize sequelize
-  const seq = new Sequelize('forum2', process.env.mysql_user, process.env.mysql_pass, {
-    host: 'localhost',
+export async function sequelizeInit() {
+  const { username, password } = await getSecret('databaseCredentials');
+
+  const seq = new Sequelize('forum2', username, password, {
+    host: config.get('databaseHost'),
     dialect: 'mysql'
   });
 
@@ -21,5 +24,3 @@ function sequelizeInit() {
   seq.models.User.hasMany(seq.models.Post);
   seq.models.Post.belongsTo(seq.models.User);
 }
-
-module.exports = { sequelizeInit, syncTables };
