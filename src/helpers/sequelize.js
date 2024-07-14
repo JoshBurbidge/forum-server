@@ -21,6 +21,4 @@ export async function sequelizeInit() {
 
   postInit(seq);
   userInit(seq);
-  seq.models.User.hasMany(seq.models.Post);
-  seq.models.Post.belongsTo(seq.models.User);
 }

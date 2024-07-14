@@ -1,5 +1,7 @@
 import express from 'express';
 import { syncTables } from '../helpers/sequelize';
+const { auth } = require("express-oauth2-jwt-bearer");
+
 
 const router = express.Router();
 
@@ -19,6 +21,16 @@ router.post('/syncTables', async (req, res) => {
     res.status(500);
     res.send();
   }
+});
+
+const checkJwt = auth({
+  audience: 'forum-api',
+  issuerBaseURL: `https://dev-ez2f8ejiacjig1qh.us.auth0.com/`,
+  algorithms: ["RS256"],
+});
+router.get("/test", checkJwt,  (req, res) => {
+  console.log(req.auth);
+  res.send({ msg: "Your access token was successfully validated!", });
 });
 
 module.exports = router;
