@@ -13,6 +13,10 @@ const postInit = (seq) => {
     content: {
       type: DataTypes.TEXT,
       allowNull: false,
+    },
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false
     }
   }, {
     sequelize: seq,
