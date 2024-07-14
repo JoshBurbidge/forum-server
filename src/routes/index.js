@@ -1,5 +1,6 @@
 import express from 'express';
 import { syncTables } from '../helpers/sequelize';
+import { verifyJwt } from '../utils/route-auth';
 
 const router = express.Router();
 
@@ -8,7 +9,7 @@ router.get('/', (req, res) => {
   res.send('Home page');
 });
 
-router.post('/syncTables', async (req, res) => {
+router.post('/syncTables', verifyJwt, async (req, res) => {
   try {
     await syncTables();
     console.log('synced');
