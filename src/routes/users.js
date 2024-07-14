@@ -1,7 +1,7 @@
 import express from 'express';
 // import shajs from 'sha.js';
 // import { Error, FieldError } from '../model/errors/Error';
-import { User } from '../model/User';
+// import { User } from '../model/User';
 import { Post } from '../model/Post';
 
 const router = express.Router();

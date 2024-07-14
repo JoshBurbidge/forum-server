@@ -1,7 +1,7 @@
 import express from 'express';
 import { Post } from '../model/Post';
 import createHttpError from 'http-errors';
-import { auth } from 'express-oauth2-jwt-bearer';
+import { verifyJwt } from '../utils/route-auth';
 
 const router = express.Router();
 
@@ -28,12 +28,8 @@ router.get('/:id', async (req, res) => {
   res.send(post.toJSON());
 });
 
-const checkJwt = auth({
-  audience: 'forum-api',
-  issuerBaseURL: `https://dev-ez2f8ejiacjig1qh.us.auth0.com/`,
-  algorithms: ["RS256"],
-});
-router.post('', checkJwt, async (req, res) => {
+
+router.post('', verifyJwt, async (req, res) => {
   console.log(req.body);
 
   const newpost = await Post.create({
@@ -45,7 +41,7 @@ router.post('', checkJwt, async (req, res) => {
   res.send(newpost);
 });
 
-router.put('/:id', checkJwt, async (req, res) => {
+router.put('/:id', verifyJwt, async (req, res) => {
   const id = req.params.id;
   const post = await Post.findByPk(id);
   if (!post) {
@@ -61,7 +57,7 @@ router.put('/:id', checkJwt, async (req, res) => {
   res.send(post.toJSON());
 });
 
-router.delete('/:id', checkJwt, async (req, res) => {
+router.delete('/:id', verifyJwt, async (req, res) => {
   const id = req.params.id;
   const post = await Post.findByPk(id);
   if (!post) {
