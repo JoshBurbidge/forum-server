@@ -79,4 +79,4 @@ router.delete('/:id', verifyJwt, async (req, res) => {
   res.send();
 });
 
-module.exports = router;
+export default router;

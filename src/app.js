@@ -6,10 +6,9 @@ import logger from 'morgan';
 import cors from 'cors';
 import 'dotenv/config';
 import { getSecretString } from './utils/secrets';
-
-const indexRouter = require('./routes/index');
-const postsRouter = require('./routes/posts');
-const usersRouter = require('./routes/users');
+import indexRouter from './routes/index';
+import postsRouter from './routes/posts';
+import usersRouter from './routes/users';
 
 export async function initialize() {
   const app = express();

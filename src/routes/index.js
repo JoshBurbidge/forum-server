@@ -26,4 +26,4 @@ router.get('/test', async (req, res) => {
   res.send({ message: 'hello' });
 });
 
-module.exports = router;
+export default router;
