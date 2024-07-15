@@ -9,6 +9,7 @@ import { getSecretString } from './utils/secrets';
 import indexRouter from './routes/index';
 import postsRouter from './routes/posts';
 import usersRouter from './routes/users';
+import { sequelizeInit } from './helpers/sequelize';
 
 export async function initialize() {
   const app = express();
@@ -38,7 +39,6 @@ export async function initialize() {
   app.use('/posts', postsRouter);
   app.use('/users', usersRouter);
 
-  const { sequelizeInit } = require('./helpers/sequelize');
 
   await sequelizeInit();
 
