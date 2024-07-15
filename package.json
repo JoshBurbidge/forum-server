@@ -9,6 +9,7 @@
     "build": "babel src -d lib"
   },
   "dependencies": {
+    "axios": "^1.7.2",
     "config": "^3.3.11",
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",

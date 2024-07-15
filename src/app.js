@@ -32,8 +32,6 @@ export async function initialize() {
   // res.header('Access-Control-Allow-Headers', 'content-type, origin, x-requested-with, accept, x-pingother, *');
   // res.header('Access-Control-Allow-Credentials', true); // cookie doesn't work without this
   // if (req.cookies) console.log('cookies: ', req.cookies);
-    if (req.signedCookies) console.log('signedCookies: ', req.signedCookies);
-    // console.log(req);
     next();
   });
 
@@ -57,7 +55,7 @@ export async function initialize() {
   });
 
   // error handler
-  app.use(function (err, req, res, next) {
+  app.use(function (err, req, res) {
   // set locals, only providing error in development
   // res.locals.message = err.message;
   // res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -70,4 +68,3 @@ export async function initialize() {
 
   return app;
 }
-// module.exports = app;

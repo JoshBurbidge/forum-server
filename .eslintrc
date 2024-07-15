@@ -21,10 +21,7 @@
       "always"
     ],
     "object-curly-newline": [
-      "error",
-      {
-        "multiline": true
-      }
+      "error"
     ],
     "comma-spacing": "error",
     "indent": [

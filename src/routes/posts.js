@@ -2,6 +2,7 @@ import express from 'express';
 import { Post } from '../model/Post';
 import createHttpError from 'http-errors';
 import { verifyJwt } from '../utils/route-auth';
+import { getUser } from '../services/auth0-service';
 
 const router = express.Router();
 
@@ -30,8 +31,6 @@ router.get('/:id', async (req, res) => {
 
 
 router.post('', verifyJwt, async (req, res) => {
-  console.log(req.body);
-
   const newpost = await Post.create({
     title: req.body.title,
     username: req.body.username,
@@ -47,6 +46,14 @@ router.put('/:id', verifyJwt, async (req, res) => {
   if (!post) {
     res.status(404);
     res.send(createHttpError(404));
+    return;
+  }
+
+  const user = await getUser(req.auth.payload.sub);
+
+  if (post.username !== user.name) {
+    res.status(403);
+    res.send(createHttpError(403, 'You do not have permission to edit this post'));
     return;
   }
 

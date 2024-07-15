@@ -22,4 +22,8 @@ router.post('/syncTables', verifyJwt, async (req, res) => {
   }
 });
 
+router.get('/test', async (req, res) => {
+  res.send({ message: 'hello' });
+});
+
 module.exports = router;
