@@ -14,5 +14,5 @@ resource "aws_lambda_function" "test_lambda" {
 }
 
 data "aws_lambda_function" "test" {
-  function_name = "test2"
+  function_name = "test"
 }
