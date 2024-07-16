@@ -74,12 +74,10 @@ jobs:
         shell: bash
 
     steps:
-    # Checkout the repository to the GitHub Actions runner
     - name: Checkout
       uses: actions/checkout@v4
-    
     - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v4
+      uses: aws-actions/configure-aws-credentials@v4 # Requires the role to have a trust policy for GHA
       with:
         role-to-assume: arn:aws:iam::575737149124:role/GithubActionsTestRole
         aws-region: us-east-1
