@@ -51,9 +51,9 @@ jobs:
         aws-region: us-east-1
     - name: Create ECR repo if not exists
       run: |
-        aws ecr describe-repositories --repository-name forum-server || aws ecr create-repository --repository-name forum-server
-        aws ecr set-repository-policy --repository-name forum-server --policy-text file://./policies/forum-server-repository-policy.json
-        aws ecr put-lifecycle-policy --repository-name forum-server --lifecycle-policy-text file://./policies/forum-server-lifecycle-policy.json
+        aws ecr describe-repositories --repository-name $REPOSITORY_NAME || aws ecr create-repository --repository-name $REPOSITORY_NAME
+        aws ecr set-repository-policy --repository-name $REPOSITORY_NAME --policy-text file://./policies/forum-server-repository-policy.json
+        aws ecr put-lifecycle-policy --repository-name $REPOSITORY_NAME --lifecycle-policy-text file://./policies/forum-server-lifecycle-policy.json
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v2
@@ -69,10 +69,9 @@ jobs:
       shell: bash
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: forum-server
+        ECR_REPOSITORY: $REPOSITORY_NAME
         IMAGE_TAG: ${{github.sha}}
       run: |
-        ls
         echo $ECR_REGISTRY
         echo $ECR_REPOSITORY
         echo $IMAGE_TAG
@@ -92,6 +91,8 @@ jobs:
       working-directory: ./terraform
     - name: Terraform Apply
       if: github.ref == 'refs/heads/master' && github.event_name == 'push'
-      run: terraform apply -auto-approve -input=false tfplan
+      run: terraform apply -auto-approve -input=false \
+           -var 'repository_name=$REPOSITORY_NAME' \
+           tfplan
       working-directory: ./terraform
     
