@@ -5,7 +5,6 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import cors from 'cors';
 import 'dotenv/config';
-import { getSecretString } from './utils/secrets';
 import indexRouter from './routes/index';
 import postsRouter from './routes/posts';
 import usersRouter from './routes/users';
@@ -21,7 +20,7 @@ export async function initialize() {
   app.use(logger('dev'));
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
-  app.use(cookieParser(await getSecretString('cookieSecret')));
+  app.use(cookieParser());
   app.use(express.static(path.join(__dirname, 'public')));
   app.use(cors({
     origin: true,
@@ -55,10 +54,6 @@ export async function initialize() {
 
   // error handler
   app.use(function (err, req, res) {
-  // set locals, only providing error in development
-  // res.locals.message = err.message;
-  // res.locals.error = req.app.get('env') === 'development' ? err : {};
-
     console.log(err);
 
     res.status(404);
