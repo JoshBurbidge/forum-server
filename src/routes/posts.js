@@ -22,7 +22,7 @@ router.get('/:id', async (req, res) => {
 
   if (!post) {
     res.status(404);
-    res.send(createHttpError(404));
+    res.send(createHttpError(404, 'post not found'));
     return;
   }
 
@@ -45,7 +45,7 @@ router.put('/:id', verifyJwt, async (req, res) => {
   const post = await Post.findByPk(id);
   if (!post) {
     res.status(404);
-    res.send(createHttpError(404));
+    res.send(createHttpError(404, 'post not found'));
     return;
   }
 
@@ -69,7 +69,7 @@ router.delete('/:id', verifyJwt, async (req, res) => {
   const post = await Post.findByPk(id);
   if (!post) {
     res.status(404);
-    res.send(createHttpError(404));
+    res.send(createHttpError(404, 'post not found'));
     return;
   }
 

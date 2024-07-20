@@ -13,10 +13,6 @@ import { sequelizeInit } from './helpers/sequelize';
 export async function initialize() {
   const app = express();
 
-  // view engine setup
-  app.set('views', path.join(__dirname, 'views'));
-  app.set('view engine', 'ejs');
-
   app.use(logger('dev'));
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
@@ -42,22 +38,19 @@ export async function initialize() {
   await sequelizeInit();
 
 
-  const { Error } = require('./model/errors/Error');
-  // this happens if the request gets past the routers defined above
-  // meaning the url is invalid (404)
-
-  // determine type of error and then forward (move to error router file)
-  // catch 404 and forward to error handler
-  app.use(function (req, res, next) {
-    next(new Error('invalid url'));
+  // this will receive the request if it gets past the routers defined above
+  app.use(function (req, res) {
+    res.status(404);
+    res.send(createError(404, 'invalid url'));
   });
 
-  // error handler
-  app.use(function (err, req, res) {
-    console.log(err);
+  // error handler because it has 4 args
+  // eslint-disable-next-line no-unused-vars
+  app.use(function (err, req, res, next) {
+    console.error(err);
 
-    res.status(404);
-    res.send(createError(404));
+    res.status(500);
+    res.send(createError(500));
   });
 
   return app;
