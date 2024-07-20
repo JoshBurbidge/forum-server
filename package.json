@@ -6,6 +6,8 @@
     "start": "node ./bin/www",
     "dev": "nodemon",
     "start:dev": "npm run build && cross-env NODE_ENV=localhost npm run start",
+    "dev-deployed": "nodemon --exec npm run start:dev-deployed",
+    "start:dev-deployed": "npm run build && cross-env NODE_ENV=deployed npm run start",
     "build": "babel src -d lib"
   },
   "dependencies": {

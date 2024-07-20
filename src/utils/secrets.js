@@ -14,8 +14,12 @@ async function getSecretFromAWS(secretKey) {
   return response.SecretString;
 }
 
+function isLocalhost() {
+  return config.get('env') === 'localhost';
+}
+
 export async function getSecretObject(secretKey) {
-  if (process.env[secretKey]) {
+  if (isLocalhost() && process.env[secretKey]) {
     return JSON.parse(process.env[secretKey]);
   }
 
@@ -25,7 +29,7 @@ export async function getSecretObject(secretKey) {
 }
 
 export async function getSecretString(secretKey) {
-  if (process.env[secretKey]) {
+  if (isLocalhost() && process.env[secretKey]) {
     return process.env[secretKey];
   }
 
