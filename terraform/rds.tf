@@ -1,4 +1,4 @@
-resource "aws_db_instance" "default" {
+resource "aws_db_instance" "db_instance" {
   allocated_storage           = 10
   db_name                     = "mydb"
   engine                      = "mysql"
