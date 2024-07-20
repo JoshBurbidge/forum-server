@@ -1,7 +1,7 @@
 resource "aws_db_instance" "db_instance" {
   identifier                  = "forum-db-instance"
   allocated_storage           = 10
-  db_name                     = "mydb"
+  db_name                     = "forum"
   engine                      = "mysql"
   engine_version              = "8.0"
   instance_class              = "db.t3.micro"
