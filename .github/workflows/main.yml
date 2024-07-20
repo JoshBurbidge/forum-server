@@ -53,7 +53,7 @@ jobs:
       run: |
         aws ecr describe-repositories --repository-name forum-server || aws ecr create-repository --repository-name forum-server
         aws ecr set-repository-policy --repository-name forum-server --policy-text file://./policies/forum-server-repository-policy.json
-        aws ecr put-lifecycle-policy --repository-name forum-server --policy-text file://./policies/forum-server-lifecycle-policy.json
+        aws ecr put-lifecycle-policy --repository-name forum-server --lifecycle-policy-text file://./policies/forum-server-lifecycle-policy.json
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v2
