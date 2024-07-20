@@ -22,9 +22,20 @@ jobs:
         with:
           node-version: 20
       - run: npm ci
+      # - run: npm run test
       - run: npm run build
+      # - run: npm prune --omit=dev
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: |
+            lib
+            node_modules
+          if-no-files-found: error
+          overwrite:
   deploy:
     name: Deploy
+    needs: build
     concurrency: server-deploy
     runs-on: ubuntu-latest
     environment: production
@@ -60,6 +71,10 @@ jobs:
       with:
         registries: 575737149124
         mask-password: "true" # see: https://github.com/aws-actions/amazon-ecr-login#docker-credentials
+    - uses: actions/download-artifact@v4
+      with:
+        name: build-artifacts
+        path:
     - name: Build, tag, and push image to Amazon ECR
       id: build-publish
       shell: bash
