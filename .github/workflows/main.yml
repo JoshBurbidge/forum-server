@@ -46,16 +46,11 @@ jobs:
       with:
         role-to-assume: arn:aws:iam::575737149124:role/forum-server-deploy
         aws-region: us-east-1
+    # - name: Create ECR repo if not exists
+    #   run: aws ecr describe-repositories forum-server || aws ecr create-repository --repository-name forum-server
     - uses: hashicorp/setup-terraform@v3
       with:
         terraform_version: 1.9.2
-    - name: Create ECR repository
-      run: |
-        terraform init
-        terraform fmt -check
-        terraform plan -target="module.ecr" -input=false -out=tfplan-ecr
-        terraform apply -auto-approve -input=false tfplan-ecr
-      working-directory: ./terraform
     - name: Terraform
       run: |
         terraform init
