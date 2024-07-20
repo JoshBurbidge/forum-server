@@ -1,0 +1,23 @@
+name: Destroy
+on:
+  workflow_dispatch: 
+
+jobs:
+  destroy:
+    name: Destroy
+    concurrency: server-deploy
+    runs-on: ubuntu-latest
+    steps:
+    - uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: 1.9.2
+    - name: Terraform
+      run: |
+        terraform init
+        terraform fmt -check
+        terraform plan -input=false -destroy \
+          -var 'repository_name=$REPOSITORY_NAME' \
+      working-directory: ./terraform
+    - name: Terraform Apply
+      run: terraform apply -auto-approve -input=false -destroy
+      working-directory: ./terraform
