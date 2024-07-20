@@ -34,6 +34,5 @@ jobs:
           -var 'repository_name=$REPOSITORY_NAME' \
       working-directory: ./terraform
     - name: Terraform Apply
-      run: terraform apply -auto-approve -input=false -destroy \
-             -var 'repository_name=$REPOSITORY_NAME' \
+      run: terraform apply -auto-approve -input=false -destroy -var 'repository_name=$REPOSITORY_NAME'
       working-directory: ./terraform
