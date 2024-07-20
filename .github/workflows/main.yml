@@ -9,6 +9,20 @@ permissions:
   contents: read
 
 jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build app
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+      - run: npm ci
+      - run: npm run build
   deploy:
     name: Deploy
     concurrency: server-deploy
@@ -46,12 +60,6 @@ jobs:
       with:
         registries: 575737149124
         mask-password: "true" # see: https://github.com/aws-actions/amazon-ecr-login#docker-credentials
-    - name: Build app
-      uses: actions/setup-node@v3
-      with:
-        node-version: 20
-    - run: npm ci
-    - run: npm run build
     - name: Build, tag, and push image to Amazon ECR
       id: build-publish
       shell: bash
@@ -60,6 +68,7 @@ jobs:
         ECR_REPOSITORY: forum-server
         IMAGE_TAG: ${{github.sha}}
       run: |
+        ls
         echo $ECR_REGISTRY
         echo $ECR_REPOSITORY
         echo $IMAGE_TAG
