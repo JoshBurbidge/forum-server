@@ -11,6 +11,11 @@ jobs:
       run:
         shell: bash
     steps:
+    - uses: actions/checkout@v4
+    - uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: arn:aws:iam::575737149124:role/forum-server-deploy
+        aws-region: us-east-1
     - uses: hashicorp/setup-terraform@v3
       with:
         terraform_version: 1.9.2
