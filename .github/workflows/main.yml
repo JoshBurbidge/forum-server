@@ -24,7 +24,7 @@ jobs:
       - run: npm ci
       # - run: npm run test
       - run: npm run build
-      # - run: npm prune --omit=dev
+      - run: npm prune --omit=dev
       - uses: actions/upload-artifact@v4
         with:
           name: build-artifacts
