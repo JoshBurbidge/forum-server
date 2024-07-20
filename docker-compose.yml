@@ -1,0 +1,11 @@
+name: forum
+
+services:
+  server:
+    image: forum-server:latest
+    ports:
+      - "3000:3000"
+    volumes:
+      - type: bind
+        source: C:/Users/Josh/.aws
+        target: /home/node/.aws
