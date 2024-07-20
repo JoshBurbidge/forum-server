@@ -1,12 +1,13 @@
 import axios from 'axios';
 import config from 'config';
-import { getSecretString } from '../utils/secrets';
+import { getSecretObject } from '../utils/secrets';
 
 export async function getManagementApiToken() {
   const clientId = config.get('auth0ClientId');
-  const body = { // use API explorer credentials because they have grants for all scopes - need to create another app for this
+  const { clientSecret } = await getSecretObject('auth0ClientSecret');
+  const body = { // uses API explorer credentials because they have grants for all scopes - need to create another app for this
     "client_id": clientId,
-    "client_secret": await getSecretString('apiExplorerSecret'),
+    "client_secret": clientSecret,
     "audience": `${config.get('auth0ApiUrl')}/`,
     "grant_type": "client_credentials"
   };
