@@ -11,9 +11,6 @@ COPY bin ./bin
 COPY config ./config
 COPY lib ./lib
 
-ENV AWS_PROFILE=admin
-ENV NODE_ENV=deployed
-
 EXPOSE 3000
 
 ENTRYPOINT [ "node" ]

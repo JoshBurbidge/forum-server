@@ -2,10 +2,16 @@ name: forum
 
 services:
   server:
-    image: forum-server:latest
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    pull_policy: build
     ports:
-      - "3000:3000"
+      - "127.0.0.1:3000:3000"
     volumes:
       - type: bind
         source: C:/Users/Josh/.aws
         target: /home/node/.aws
+    environment:
+      - AWS_PROFILE=admin
+      - NODE_ENV=deployed
