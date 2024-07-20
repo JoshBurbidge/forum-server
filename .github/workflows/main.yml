@@ -49,6 +49,13 @@ jobs:
     - uses: hashicorp/setup-terraform@v3
       with:
         terraform_version: 1.9.2
+    - name: Create ECR repository
+      run: |
+        terraform init
+        terraform fmt -check
+        terraform plan -target="module.ecr" -input=false -out=tfplan-ecr
+        terraform apply -auto-approve -input=false tfplan-ecr
+      working-directory: ./terraform
     - name: Terraform
       run: |
         terraform init
