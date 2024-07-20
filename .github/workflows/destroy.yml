@@ -7,6 +7,9 @@ jobs:
     name: Destroy
     concurrency: server-deploy
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
     steps:
     - uses: hashicorp/setup-terraform@v3
       with:
