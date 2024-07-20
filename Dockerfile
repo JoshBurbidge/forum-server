@@ -6,7 +6,6 @@ USER node
 
 COPY node_modules ./node_modules
 COPY package.json package-lock.json ./
-COPY public ./public
 COPY bin ./bin
 COPY config ./config
 COPY lib ./lib

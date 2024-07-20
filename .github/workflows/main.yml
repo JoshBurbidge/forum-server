@@ -1,4 +1,4 @@
-name: 'Terraform'
+name: Deploy
 on:
   push:
     branches: [ "master", "tf-gha" ]
@@ -42,10 +42,16 @@ jobs:
       working-directory: ./terraform
     - name: Login to Amazon ECR
       id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v1
+      uses: aws-actions/amazon-ecr-login@v2
       with:
         registries: 575737149124
         mask-password: "true" # see: https://github.com/aws-actions/amazon-ecr-login#docker-credentials
+    - name: Build app
+      uses: actions/setup-node@v3
+      with:
+        node-version: 20
+    - run: npm ci
+    - run: npm run build
     - name: Build, tag, and push image to Amazon ECR
       id: build-publish
       shell: bash
