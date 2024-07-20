@@ -1,0 +1,17 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "registryPolicyStatement",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": [
+          "arn:aws:iam::575737149124:root",
+          "arn:aws:iam::575737149124:user/admin",
+          "arn:aws:iam::575737149124:role/forum-server-deploy"
+        ]
+      },
+      "Action": "ecr:*"
+    }
+  ]
+}

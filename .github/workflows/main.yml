@@ -46,8 +46,38 @@ jobs:
       with:
         role-to-assume: arn:aws:iam::575737149124:role/forum-server-deploy
         aws-region: us-east-1
-    # - name: Create ECR repo if not exists
-    #   run: aws ecr describe-repositories forum-server || aws ecr create-repository --repository-name forum-server
+    - name: Create ECR repo if not exists
+      run: |
+        aws ecr describe-repositories forum-server || aws ecr create-repository --repository-name forum-server
+        aws ecr set-repository-policy --repository-name --policy-text file://./policies/forum-server-repository-policy.json
+        aws ecr put-lifecycle-policy --repository-name --policy-text file://./policies/forum-server-lifecycle-policy.json
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v2
+      with:
+        registries: 575737149124
+        mask-password: "true"
+    - name: Populate build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: build-artifacts
+    - name: Build, tag, and push image to Amazon ECR
+      id: build-publish
+      shell: bash
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: forum-server
+        IMAGE_TAG: ${{github.sha}}
+      run: |
+        ls
+        echo $ECR_REGISTRY
+        echo $ECR_REPOSITORY
+        echo $IMAGE_TAG
+        docker build . -f Dockerfile -t "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+        docker push "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+        echo "IMAGE $IMAGE_TAG is pushed to $ECR_REGISTRY/$ECR_REPOSITORY"
+        echo "image_tag=$IMAGE_TAG" 
+        echo "full_image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
     - uses: hashicorp/setup-terraform@v3
       with:
         terraform_version: 1.9.2
@@ -61,30 +91,4 @@ jobs:
       if: github.ref == 'refs/heads/master' && github.event_name == 'push'
       run: terraform apply -auto-approve -input=false tfplan
       working-directory: ./terraform
-    # - name: Login to Amazon ECR
-    #   id: login-ecr
-    #   uses: aws-actions/amazon-ecr-login@v2
-    #   with:
-    #     registries: 575737149124
-    #     mask-password: "true"
-    # - name: Populate build artifacts
-    #   uses: actions/download-artifact@v4
-    #   with:
-    #     name: build-artifacts
-    # - name: Build, tag, and push image to Amazon ECR
-    #   id: build-publish
-    #   shell: bash
-    #   env:
-    #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-    #     ECR_REPOSITORY: forum-server
-    #     IMAGE_TAG: ${{github.sha}}
-    #   run: |
-    #     ls
-    #     echo $ECR_REGISTRY
-    #     echo $ECR_REPOSITORY
-    #     echo $IMAGE_TAG
-    #     docker build . -f Dockerfile -t "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
-    #     docker push "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
-    #     echo "IMAGE $IMAGE_TAG is pushed to $ECR_REGISTRY/$ECR_REPOSITORY"
-    #     echo "image_tag=$IMAGE_TAG" 
-    #     echo "full_image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+    
