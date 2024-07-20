@@ -1,0 +1,42 @@
+name: 'Terraform'
+on:
+  push:
+    branches: [ "master", "tf-gha" ]
+  pull_request:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  terraform:
+    name: 'Terraform'
+    runs-on: ubuntu-latest
+    environment: production
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4 # Requires the role to have a trust policy for GHA
+      with:
+        role-to-assume: arn:aws:iam::575737149124:role/forum-server-deploy
+        aws-region: us-east-1
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: 1.9.2
+    - name: Terraform
+      run: |
+        terraform init
+        terraform fmt -check
+        terraform plan -input=false -out=tfplan
+      working-directory: ./terraform
+
+      # On push to "master", build or change infrastructure according to Terraform configuration files
+    - name: Terraform Apply
+      if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+      run: terraform apply -auto-approve -input=false tfplan
