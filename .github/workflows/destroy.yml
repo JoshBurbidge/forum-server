@@ -6,6 +6,9 @@ permissions:
   id-token: write
   contents: read
 
+env:
+  REPOSITORY_NAME: forum-server
+
 jobs:
   destroy:
     name: Destroy
@@ -31,5 +34,6 @@ jobs:
           -var 'repository_name=$REPOSITORY_NAME' \
       working-directory: ./terraform
     - name: Terraform Apply
-      run: terraform apply -auto-approve -input=false -destroy
+      run: terraform apply -auto-approve -input=false -destroy \
+             -var 'repository_name=$REPOSITORY_NAME' \
       working-directory: ./terraform
