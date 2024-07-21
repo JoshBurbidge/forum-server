@@ -10,3 +10,5 @@
 #### ECS
 42498b1df431287e140bb30f10fff2ee68586693 - creates ecs service with nginx task
 accepts requests at the ENI IP/DNS name
+
+got ECS service+task created with app container but it's existing immediately - trying to set up logs
