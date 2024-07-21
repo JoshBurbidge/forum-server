@@ -52,6 +52,9 @@ resource "aws_ecs_task_definition" "task" {
         name  = "NODE_ENV"
         value = "deployed"
       }]
+      logConfiguation = {
+        logDriver = "awslogs"
+      }
       portMappings = [
         {
           containerPort = 3000
