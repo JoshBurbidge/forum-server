@@ -47,6 +47,7 @@ resource "aws_cloudwatch_log_group" "log_group" {
 resource "aws_ecs_task_definition" "task" {
   family             = "forum-server-task"
   execution_role_arn = data.aws_iam_role.task_exec_role.arn
+  task_role_arn      = data.aws_iam_role.task_exec_role.arn
   network_mode       = "awsvpc"
   cpu                = 256
   memory             = 512
