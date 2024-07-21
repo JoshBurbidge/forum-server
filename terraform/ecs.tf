@@ -44,19 +44,6 @@ resource "aws_ecs_service" "service" {
 #   tags = local.tags
 # }
 
-data "template_file" "container_definition" {
-  template = file("${path.module}/task-definitions/service.json.tmpl")
-
-  vars = {
-    cw_log_group             = module.ecs-service-fargate.log_group_name
-    environment_name         = var.environment_name
-    project_name             = var.service_name
-    container_port           = var.container_port
-    image                    = "${var.container_image}:${var.git_commit}"
-    region                   = data.aws_region.current.name
-    datadog_agent_definition = jsonencode(module.datadog_agent_fargate_task_definition.agent_container)
-  }
-}
 
 resource "aws_ecs_task_definition" "task" {
   family             = "forum-server-task"
