@@ -87,8 +87,8 @@ jobs:
         terraform init
         terraform fmt -check
         terraform plan -input=false -out=tfplan \
-          -var 'repository_name=$REPOSITORY_NAME' \
-          -var 'git_commit_sha=${{github.sha}}'
+          -var "repository_name=$REPOSITORY_NAME" \
+          -var "git_commit_sha=${{github.sha}}"
       working-directory: ./terraform
     - name: Terraform Apply
       # if: github.ref == 'refs/heads/master' && github.event_name == 'push'
