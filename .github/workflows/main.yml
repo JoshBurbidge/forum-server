@@ -1,7 +1,7 @@
 name: Deploy
 on:
   push:
-    branches: [ "master", "tf-gha" ]
+    branches: [ "master", "ecs-service" ]
   pull_request:
 
 permissions:
