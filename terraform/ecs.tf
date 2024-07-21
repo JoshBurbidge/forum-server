@@ -26,7 +26,7 @@ resource "aws_ecs_service" "service" {
   # depends_on      = [aws_iam_role_policy.foo]
 
   network_configuration {
-    subnets          = [data.aws_subnet.subnet.id]
+    subnets          = data.aws_subnets.subnets.ids
     assign_public_ip = true
   }
 
