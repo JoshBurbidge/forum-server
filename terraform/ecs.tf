@@ -46,7 +46,7 @@ resource "aws_ecs_task_definition" "task" {
   container_definitions = jsonencode([
     {
       name      = "forum-server"
-      image     = "${data.aws_ecr_repository.repository.repository_url}/${var.git_commit_sha}"
+      image     = "${data.aws_ecr_repository.repository.repository_url}:${var.git_commit_sha}"
       essential = true
       environment = [{
         name  = "NODE_ENV"
