@@ -59,8 +59,8 @@ resource "aws_ecs_task_definition" "task" {
         name  = "NODE_ENV"
         value = "deployed"
       }]
-      log_configuation = {
-        logDriver = "awslogs"
+      logConfiguation = {
+        logDriver = "awslogs",
         options = {
           awslogs-create-group = true
         }
