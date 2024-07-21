@@ -62,7 +62,9 @@ resource "aws_ecs_task_definition" "task" {
       logConfiguation = {
         logDriver = "awslogs",
         options = {
-          awslogs-create-group = true
+          awslogs-create-group = true,
+          awslogs-group        = "/ecs/${local.app_name}-ecs",
+          awslogs-region       = "us-east-1"
         }
       }
       portMappings = [
