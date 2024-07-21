@@ -14,6 +14,13 @@ terraform {
   required_version = ">= 1.9.2"
 }
 
+locals {
+  app_name = "forum-server"
+  tags = {
+    app = local.app_name
+  }
+}
+
 provider "aws" {
   region = "us-east-1"
 }
