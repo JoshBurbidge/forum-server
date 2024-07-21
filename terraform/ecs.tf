@@ -30,11 +30,6 @@ resource "aws_ecs_service" "service" {
     assign_public_ip = true
   }
 
-  ordered_placement_strategy {
-    type  = "binpack"
-    field = "cpu"
-  }
-
   lifecycle {
     ignore_changes = [desired_count]
   }
