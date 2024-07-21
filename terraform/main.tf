@@ -17,3 +17,11 @@ terraform {
 provider "aws" {
   region = "us-east-1"
 }
+
+output "db_master_user_secret" {
+  value = aws_db_instance.db_instance.master_user_secret[0].secret_arn
+}
+
+output "db_endpoint" {
+  value = aws_db_instance.db_instance.address
+}
