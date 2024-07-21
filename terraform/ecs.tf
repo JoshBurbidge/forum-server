@@ -38,7 +38,7 @@ resource "aws_ecs_service" "service" {
 }
 
 resource "aws_cloudwatch_log_group" "log_group" {
-  name              = "${local.app_name}-ecs"
+  name              = "/ecs/${local.app_name}-ecs-task"
   retention_in_days = 3
 
   tags = local.tags
@@ -65,7 +65,7 @@ resource "aws_ecs_task_definition" "task" {
         options = {
           "awslogs-group"         = "${aws_cloudwatch_log_group.log_group.name}",
           "awslogs-region"        = "us-east-1",
-          "awslogs-stream-prefix" = "${var.github_commit_sha}"
+          "awslogs-stream-prefix" = "ecs"
         }
       }
       portMappings = [
