@@ -37,6 +37,13 @@ resource "aws_ecs_service" "service" {
   tags = local.tags
 }
 
+# resource "aws_cloudwatch_log_group" "log_group" {
+#   name              = "${local.app_name}-ecs"
+#   retention_in_days = 3
+
+#   tags = local.tags
+# }
+
 resource "aws_ecs_task_definition" "task" {
   family             = "forum-server-task"
   execution_role_arn = data.aws_iam_role.task_exec_role.arn
@@ -52,8 +59,11 @@ resource "aws_ecs_task_definition" "task" {
         name  = "NODE_ENV"
         value = "deployed"
       }]
-      logConfiguation = {
+      log_configuation = {
         logDriver = "awslogs"
+        options = {
+          awslogs-create-group = true
+        }
       }
       portMappings = [
         {
