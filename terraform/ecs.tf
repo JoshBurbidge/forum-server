@@ -37,13 +37,12 @@ resource "aws_ecs_service" "service" {
   tags = local.tags
 }
 
-# resource "aws_cloudwatch_log_group" "log_group" {
-#   name              = "${local.app_name}-ecs"
-#   retention_in_days = 3
+resource "aws_cloudwatch_log_group" "log_group" {
+  name              = "${local.app_name}-ecs"
+  retention_in_days = 3
 
-#   tags = local.tags
-# }
-
+  tags = local.tags
+}
 
 resource "aws_ecs_task_definition" "task" {
   family             = "forum-server-task"
@@ -63,8 +62,7 @@ resource "aws_ecs_task_definition" "task" {
       logConfiguration = {
         logDriver = "awslogs",
         options = {
-          "awslogs-create-group"  = "true",
-          "awslogs-group"         = "/ecs/${local.app_name}-ecs",
+          "awslogs-group"         = "${aws_cloudwatch_log_group.log_group.name}",
           "awslogs-region"        = "us-east-1",
           "awslogs-stream-prefix" = "ecs"
         }
