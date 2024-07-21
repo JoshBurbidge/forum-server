@@ -25,6 +25,11 @@ resource "aws_ecs_service" "service" {
   # iam_role        = aws_iam_role.foo.arn # maybe don't need this? only need to define a task role on the task def?
   # depends_on      = [aws_iam_role_policy.foo]
 
+  network_configuration {
+    subnets          = [data.aws_subnet.subnet.id]
+    assign_public_ip = true
+  }
+
   ordered_placement_strategy {
     type  = "binpack"
     field = "cpu"
