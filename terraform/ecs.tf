@@ -22,10 +22,10 @@ resource "aws_ecs_service" "service" {
   cluster         = aws_ecs_cluster.cluster.id
   task_definition = aws_ecs_task_definition.task.arn
   desired_count   = 1
-  # iam_role        = aws_iam_role.foo.arn # maybe don't need this? only need to define a task role on the task def?
-  # depends_on      = [aws_iam_role_policy.foo]
 
   network_configuration {
+    # multiple subnets means it can create tasks in each subnet
+    # so if you have multiple tasks you can have tasks in multiple subnets
     subnets          = data.aws_subnets.subnets.ids
     assign_public_ip = true
   }
@@ -46,12 +46,16 @@ resource "aws_ecs_task_definition" "task" {
   container_definitions = jsonencode([
     {
       name      = "forum-server"
-      image     = "nginx:latest"
+      image     = "${data.aws_ecr_repository.repository.repository_url}/${var.git_commit_sha}"
       essential = true
+      environment = [{
+        name  = "NODE_ENV"
+        value = "deployed"
+      }]
       portMappings = [
         {
-          containerPort = 8080
-          hostPort      = 8080
+          containerPort = 3000
+          hostPort      = 3000
         }
       ]
     }

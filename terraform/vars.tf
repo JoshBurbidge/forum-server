@@ -3,3 +3,8 @@ variable "repository_name" {
   type        = string
   default     = "forum-server"
 }
+
+variable "git_commit_sha" {
+  description = "the git commit that triggered the deployment"
+  type        = string
+}
