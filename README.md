@@ -12,3 +12,8 @@
 accepts requests at the ENI IP/DNS name
 
 got ECS service+task created with app container but it's existing immediately - trying to set up logs
+
+added logConfiguration options to send stdout to cloudwatch
+error was because AWS SDK found no credentials 
+  - had to add task role because that's what is used by the application
+  - "execution role" is only for creating the task

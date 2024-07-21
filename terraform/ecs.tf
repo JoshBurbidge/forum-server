@@ -46,8 +46,8 @@ resource "aws_cloudwatch_log_group" "log_group" {
 
 resource "aws_ecs_task_definition" "task" {
   family             = "forum-server-task"
-  execution_role_arn = data.aws_iam_role.task_exec_role.arn
-  task_role_arn      = data.aws_iam_role.task_exec_role.arn
+  execution_role_arn = data.aws_iam_role.task_exec_role.arn # permissions to pull container images and run the task (the default TaskExecutionRole policy)
+  task_role_arn      = data.aws_iam_role.task_exec_role.arn # permissions used for the application to access other AWS services (secrets, s3, etc)
   network_mode       = "awsvpc"
   cpu                = 256
   memory             = 512
@@ -65,7 +65,7 @@ resource "aws_ecs_task_definition" "task" {
         options = {
           "awslogs-group"         = "${aws_cloudwatch_log_group.log_group.name}",
           "awslogs-region"        = "us-east-1",
-          "awslogs-stream-prefix" = "ecs"
+          "awslogs-stream-prefix" = "${var.github_commit_sha}"
         }
       }
       portMappings = [
