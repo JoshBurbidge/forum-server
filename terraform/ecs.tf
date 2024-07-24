@@ -16,6 +16,8 @@ resource "aws_ecs_cluster_capacity_providers" "example" {
   }
 }
 
+# this target group should point to the container in the task
+# outside, we create a LB with listener that points to this TG
 resource "aws_lb_target_group" "forum_server_tg" {
   name        = "forum-server-tg"
   port        = 3000

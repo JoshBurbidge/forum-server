@@ -12,6 +12,13 @@ data "aws_subnets" "subnets" {
   }
 }
 
+data "aws_security_groups" "default_vpc_sgs" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.default_vpc.id]
+  }
+}
+
 output "default_vpc" {
   value = data.aws_vpc.default_vpc.id
 }
