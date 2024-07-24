@@ -24,49 +24,6 @@ resource "aws_lb_listener" "lb_listener" {
   }
 }
 
-resource "aws_lb_listener_rule" "test_rule" {
-  listener_arn = aws_lb_listener.lb_listener.arn
-  priority     = 4
-
-  action {
-    type = "fixed-response"
-    fixed_response {
-      status_code  = 200
-      content_type = "text/plain"
-      message_body = "2"
-    }
-  }
-
-  condition {
-    query_string {
-      key   = "foo2"
-      value = "bar2"
-    }
-  }
-}
-
-resource "aws_lb_listener_rule" "test_rule_2" {
-  listener_arn = aws_lb_listener.lb_listener.arn
-  priority     = 5
-
-  action {
-    type = "fixed-response"
-    fixed_response {
-      status_code  = 200
-      content_type = "text/plain"
-      message_body = "Oy"
-    }
-  }
-
-  condition {
-    query_string {
-      key   = "foo"
-      value = "bar"
-    }
-  }
-}
-
-
 resource "aws_lb_listener_rule" "forum_server_forward_rule" {
   listener_arn = aws_lb_listener.lb_listener.arn
   priority     = 6
@@ -77,6 +34,7 @@ resource "aws_lb_listener_rule" "forum_server_forward_rule" {
   }
 
   condition {
+    // maybe change this to have an app prefix or something
     path_pattern {
       values = ["*"]
     }
