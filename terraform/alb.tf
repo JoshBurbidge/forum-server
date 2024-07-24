@@ -26,7 +26,7 @@ resource "aws_lb_listener" "lb_listener" {
 
 resource "aws_lb_listener_rule" "test_rule" {
   listener_arn = aws_lb_listener.lb_listener.arn
-  priority     = 99
+  priority     = 3
 
   action {
     type = "fixed-response"
@@ -47,7 +47,7 @@ resource "aws_lb_listener_rule" "test_rule" {
 
 resource "aws_lb_listener_rule" "test_rule_2" {
   listener_arn = aws_lb_listener.lb_listener.arn
-  priority     = 98
+  priority     = 2
 
   action {
     type = "fixed-response"
