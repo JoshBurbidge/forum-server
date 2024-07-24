@@ -16,6 +16,15 @@ resource "aws_ecs_cluster_capacity_providers" "example" {
   }
 }
 
+resource "aws_lb_target_group" "forum_server_tg" {
+  name        = "forum-server-tg"
+  port        = 3000
+  protocol    = "HTTP"
+  target_type = "ip"
+  vpc_id      = aws_vpc.default_vpc.id
+  tags        = local.tags
+}
+
 resource "aws_ecs_service" "service" {
   name            = local.app_name
   launch_type     = "FARGATE"
@@ -28,6 +37,14 @@ resource "aws_ecs_service" "service" {
     # so if you have multiple tasks you can have tasks in multiple subnets
     subnets          = data.aws_subnets.subnets.ids
     assign_public_ip = true
+  }
+
+  # ip must be target because this service is awsvpc network
+  # Your load balancer subnet configuration must include all Availability Zones that your container instances reside in. (subnets within th given VPC)
+  load_balancer {
+    target_group_arn = aws_lb_target_group.forum_server_tg.arn
+    container_name   = local.app_name
+    container_port   = 3000
   }
 
   lifecycle {
