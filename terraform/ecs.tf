@@ -49,6 +49,7 @@ resource "aws_ecs_service" "service" {
     container_port   = 3000
   }
 
+  depends_on = [aws_lb_listener.lb_listener_http]
   lifecycle {
     ignore_changes = [desired_count]
   }

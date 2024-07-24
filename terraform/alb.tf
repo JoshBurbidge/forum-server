@@ -9,7 +9,7 @@ resource "aws_lb" "main_alb" {
   tags = local.tags
 }
 
-resource "aws_lb_listener" "lb_listener" {
+resource "aws_lb_listener" "lb_listener_http" {
   load_balancer_arn = aws_lb.main_alb.arn
   port              = "80"
   protocol          = "HTTP"
@@ -25,7 +25,7 @@ resource "aws_lb_listener" "lb_listener" {
 }
 
 resource "aws_lb_listener_rule" "test_rule" {
-  listener_arn = aws_lb_listener.lb_listener.arn
+  listener_arn = aws_lb_listener.lb_listener_http.arn
   priority     = 100
 
   action {
@@ -33,19 +33,20 @@ resource "aws_lb_listener_rule" "test_rule" {
     fixed_response {
       status_code  = 200
       content_type = "text/plain"
-      message_body = "Oy"
+      message_body = "2"
     }
   }
 
   condition {
-    host_header {
-      values = ["secretHostHeader"]
+    query_string {
+      key   = "foo2"
+      value = "bar2"
     }
   }
 }
 
 resource "aws_lb_listener_rule" "test_rule_2" {
-  listener_arn = aws_lb_listener.lb_listener.arn
+  listener_arn = aws_lb_listener.lb_listener_http.arn
   priority     = 100
 
   action {
@@ -67,7 +68,7 @@ resource "aws_lb_listener_rule" "test_rule_2" {
 
 
 resource "aws_lb_listener_rule" "forum_server_forward_rule" {
-  listener_arn = aws_lb_listener.lb_listener.arn
+  listener_arn = aws_lb_listener.lb_listener_http.arn
   priority     = 1
 
   action {
