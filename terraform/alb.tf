@@ -26,7 +26,7 @@ resource "aws_lb_listener" "lb_listener" {
 
 resource "aws_lb_listener_rule" "test_rule" {
   listener_arn = aws_lb_listener.lb_listener.arn
-  priority     = 3
+  priority     = 1
 
   action {
     type = "fixed-response"
@@ -69,7 +69,7 @@ resource "aws_lb_listener_rule" "test_rule_2" {
 
 resource "aws_lb_listener_rule" "forum_server_forward_rule" {
   listener_arn = aws_lb_listener.lb_listener.arn
-  priority     = 1
+  priority     = 3
 
   action {
     type             = "forward"
