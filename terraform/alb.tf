@@ -33,13 +33,14 @@ resource "aws_lb_listener_rule" "test_rule" {
     fixed_response {
       status_code  = 200
       content_type = "text/plain"
-      message_body = "Oy"
+      message_body = "2"
     }
   }
 
   condition {
-    host_header {
-      values = ["secretHostHeader"]
+    query_string {
+      key   = "foo2"
+      value = "bar2"
     }
   }
 }
