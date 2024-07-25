@@ -25,6 +25,10 @@ resource "aws_lb_target_group" "forum_server_tg" {
   target_type = "ip"
   vpc_id      = data.aws_vpc.default_vpc.id
   tags        = local.tags
+  health_check {
+    interval = 60
+    path     = "/posts"
+  }
 }
 
 resource "aws_ecs_service" "service" {
