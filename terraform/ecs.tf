@@ -68,8 +68,8 @@ resource "aws_ecs_task_definition" "task" {
   execution_role_arn = data.aws_iam_role.task_exec_role.arn # permissions to pull container images and run the task (the default TaskExecutionRole policy)
   task_role_arn      = data.aws_iam_role.task_exec_role.arn # permissions used for the application to access other AWS services (secrets, s3, etc)
   network_mode       = "awsvpc"
-  cpu                = 256
-  memory             = 512
+  cpu                = 512
+  memory             = 1024
   container_definitions = jsonencode([
     {
       name      = "forum-server"
@@ -87,10 +87,10 @@ resource "aws_ecs_task_definition" "task" {
           "awslogs-stream-prefix" = "ecs"
         }
       }
-      # healthCheck = {
-      #   command     = ["CMD", "curl -f http://localhost:3000/posts || exit 1"]
-      #   startPeriod = 5
-      # }
+      healthCheck = {
+        command     = ["CMD", "curl -f http://localhost:3000/posts || exit 1"]
+        startPeriod = 5
+      }
       portMappings = [
         {
           containerPort = 3000
