@@ -92,9 +92,8 @@ resource "aws_ecs_task_definition" "task" {
         }
       }
       healthCheck = {
-        command     = ["CMD", "curl http://localhost:3000/posts || exit 1"]
-        startPeriod = 5
-        interval    = 60
+        command  = ["CMD", "curl http://localhost:3000/posts || exit 1"]
+        interval = 60
       }
       portMappings = [
         {
