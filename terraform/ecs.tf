@@ -26,7 +26,6 @@ resource "aws_lb_target_group" "forum_server_tg" {
   vpc_id      = data.aws_vpc.default_vpc.id
   tags        = local.tags
   health_check {
-    enabled  = false
     interval = 60
     path     = "/posts"
   }
@@ -95,7 +94,7 @@ resource "aws_ecs_task_definition" "task" {
       healthCheck = {
         command     = ["CMD", "curl http://localhost:3000/posts || exit 1"]
         startPeriod = 5
-        interva     = 60
+        interval    = 60
       }
       portMappings = [
         {
