@@ -9,11 +9,16 @@ import indexRouter from './routes/index';
 import postsRouter from './routes/posts';
 import usersRouter from './routes/users';
 import { sequelizeInit } from './helpers/sequelize';
+import config from 'config';
 
 export async function initialize() {
   const app = express();
 
-  app.use(logger('dev'));
+  if (config.get('env') === "localhost") {
+    app.use(logger('dev'));
+  } else {
+    app.use(logger('common'));
+  }
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
   app.use(cookieParser());
