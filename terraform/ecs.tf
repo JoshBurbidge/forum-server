@@ -87,10 +87,10 @@ resource "aws_ecs_task_definition" "task" {
           "awslogs-stream-prefix" = "ecs"
         }
       }
-      healthCheck = {
-        command     = ["CMD", "curl -f http://localhost:3000/posts || exit 1"]
-        startPeriod = 5
-      }
+      # healthCheck = {
+      #   command     = ["CMD", "curl -f http://localhost:3000/posts || exit 1"]
+      #   startPeriod = 5
+      # }
       portMappings = [
         {
           containerPort = 3000
