@@ -80,12 +80,16 @@ resource "aws_ecs_task_definition" "task" {
         value = "deployed"
       }]
       logConfiguration = {
-        logDriver = "awslogs",
+        logDriver = "awslogs"
         options = {
-          "awslogs-group"         = "${aws_cloudwatch_log_group.log_group.name}",
-          "awslogs-region"        = "us-east-1",
+          "awslogs-group"         = "${aws_cloudwatch_log_group.log_group.name}"
+          "awslogs-region"        = "us-east-1"
           "awslogs-stream-prefix" = "ecs"
         }
+      }
+      healthCheck = {
+        command     = ["CMD", "curl -f http://localhost:3000 || exit 1"]
+        startPeriod = 5
       }
       portMappings = [
         {
