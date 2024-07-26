@@ -92,7 +92,7 @@ resource "aws_ecs_task_definition" "task" {
         }
       }
       healthCheck = {
-        command  = ["CMD-SHELL", "curl http://localhost:3000/health || exit 1"]
+        command  = ["CMD-SHELL", "curl http://localhost:3000/posts || exit 1"]
         interval = 60
       }
       portMappings = [
