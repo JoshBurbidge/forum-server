@@ -22,8 +22,8 @@ router.post('/syncTables', verifyJwt, async (req, res) => {
   }
 });
 
-router.get('/test', async (req, res) => {
-  res.send({ message: 'hello' });
+router.get('/health', async (req, res) => {
+  res.send({ healthy: true });
 });
 
 export default router;
