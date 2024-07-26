@@ -72,8 +72,8 @@ resource "aws_ecs_task_definition" "task" {
   execution_role_arn = data.aws_iam_role.task_exec_role.arn # permissions to pull container images and run the task (the default TaskExecutionRole policy)
   task_role_arn      = data.aws_iam_role.task_exec_role.arn # permissions used for the application to access other AWS services (secrets, s3, etc)
   network_mode       = "awsvpc"
-  cpu                = 512
-  memory             = 1024
+  cpu                = 256
+  memory             = 512
   container_definitions = jsonencode([
     {
       name      = "forum-server"
