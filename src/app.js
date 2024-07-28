@@ -35,9 +35,9 @@ export async function initialize() {
     next();
   });
 
-  app.use('/', indexRouter);
-  app.use('/posts', postsRouter);
-  app.use('/users', usersRouter);
+  app.use('/api', indexRouter);
+  app.use('/api/posts', postsRouter);
+  app.use('/api/users', usersRouter);
 
 
   await sequelizeInit();
