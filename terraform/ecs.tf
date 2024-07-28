@@ -27,7 +27,7 @@ resource "aws_lb_target_group" "forum_server_tg" {
   tags        = local.tags
   health_check {
     interval = 60
-    path     = "/posts"
+    path     = "/api/posts"
   }
 }
 
@@ -92,7 +92,7 @@ resource "aws_ecs_task_definition" "task" {
         }
       }
       healthCheck = {
-        command  = ["CMD-SHELL", "curl http://localhost:3000/posts || exit 1"]
+        command  = ["CMD-SHELL", "curl http://localhost:3000/api/posts || exit 1"]
         interval = 60
       }
       portMappings = [
