@@ -26,7 +26,7 @@ resource "aws_lb_listener" "lb_listener" {
 
 resource "aws_lb_listener_rule" "forum_server_forward_rule" {
   listener_arn = aws_lb_listener.lb_listener.arn
-  priority     = 6
+  priority     = 2
 
   action {
     type             = "forward"
@@ -36,7 +36,7 @@ resource "aws_lb_listener_rule" "forum_server_forward_rule" {
   condition {
     // maybe change this to have an app prefix or something
     path_pattern {
-      values = ["*"]
+      values = ["/api/*"]
     }
   }
 }
