@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
     pull_policy: build
     ports:
-      - "127.0.0.1:3000:3000"
+      - "3000:3000"
     volumes:
       - type: bind
         source: C:/Users/Josh/.aws
@@ -15,3 +15,10 @@ services:
     environment:
       - AWS_PROFILE=admin
       - NODE_ENV=deployed
+  client:
+    build:
+      context: ../forum-client
+      dockerfile: Dockerfile
+    pull_policy: build
+    ports:
+      - "3001:3001"
