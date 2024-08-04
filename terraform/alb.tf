@@ -1,14 +1,3 @@
-resource "aws_lb" "main_alb" {
-  name               = "main-lb"
-  internal           = false
-  load_balancer_type = "application"
-  security_groups    = data.aws_security_groups.default_vpc_sgs.ids
-  subnets            = data.aws_subnets.subnets.ids
-
-
-  tags = local.tags
-}
-
 data "aws_lb" "main_lb_data" {
   name = "main-lb"
 }
